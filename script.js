@@ -3,11 +3,11 @@
       npointUrl: ''
     },
     branding: {
-      partnerName: 'Travelance',
+      partnerName: '',
       colors: {
-        primary: '#0F6E6A',
-        secondary: '#0B5652',
-        footer: '#123832'
+        primary: '',
+        secondary: '',
+        footer: ''
       },
       logo: '',
       footerLogo: '',
@@ -15,29 +15,29 @@
       loginBackground: ''
     },
     user: {
-      displayName: 'Elena Rivilla',
-      agencyStatus: 'AGENCIAS PENDIENTE...',
-      welcomeName: 'Elena',
+      displayName: '',
+      agencyStatus: '',
+      welcomeName: '',
       profile: {
-        firstName: 'Elena',
-        lastName1: 'Rivilla',
+        firstName: '',
+        lastName1: '',
         lastName2: '',
-        country: 'España',
-        province: 'Islas Baleares',
+        country: '',
+        province: '',
         city: '',
         postalCode: '',
-        taxId: '98745612Z',
-        birthDate: '1991-03-01',
-        email: 'elena.rivilla@soltour.com',
-        phone: '123123456',
-        agency: 'AGENCIAS PENDIENTES DE DEFINIR',
-        gender: 'M'
+        taxId: '',
+        birthDate: '',
+        email: '',
+        phone: '',
+        agency: '',
+        gender: ''
       }
     },
     rewards: {
-      agentPoints: 1500,
-      rewardMinPoints: 1000,
-      withholdingRatePct: 0.02
+      agentPoints: 0,
+      rewardMinPoints: 0,
+      withholdingRatePct: 0
     }
   };
 
@@ -99,7 +99,7 @@
         rewards: mergeConfig(DEFAULT_CONFIG.rewards, config.rewards || {})
       };
     } catch (error) {
-      console.warn('No se pudo cargar config.json. Se usarán valores por defecto.', error);
+      console.warn('No se pudo cargar config.json. Se usará la estructura base vacía.', error);
       return cloneData(DEFAULT_CONFIG);
     }
   }
@@ -507,9 +507,9 @@
     scheduleSave();
   }
   function updatePartnerName(name) {
-    currentBrandName = (name && name.trim()) ? name.trim() : 'Travelance';
+    currentBrandName = (name && name.trim()) ? name.trim() : '';
     document.querySelectorAll('.brand-name').forEach(el => el.textContent = currentBrandName);
-    document.title = `${currentBrandName} Rewards — Mockup`;
+    document.title = currentBrandName ? `${currentBrandName} Rewards — Mockup` : 'Rewards — Mockup';
     // si no hay logo personalizado, refresca el texto de fallback con la nueva marca
     if (!currentLogoValue) updateLogo('');
     if (!currentFooterLogoValue) updateFooterLogo('');
@@ -596,8 +596,8 @@
   function applyRewardsConfig() {
     const rewardsConfig = mergeConfig(DEFAULT_CONFIG.rewards, appConfig.rewards || {});
     mockAgentPoints = Number(rewardsConfig.agentPoints) || 0;
-    mockRewardMinPoints = Number(rewardsConfig.rewardMinPoints) || DEFAULT_CONFIG.rewards.rewardMinPoints;
-    withholdingRatePct = Number(rewardsConfig.withholdingRatePct) || DEFAULT_CONFIG.rewards.withholdingRatePct;
+    mockRewardMinPoints = Number.isFinite(Number(rewardsConfig.rewardMinPoints)) ? Number(rewardsConfig.rewardMinPoints) : 0;
+    withholdingRatePct = Number.isFinite(Number(rewardsConfig.withholdingRatePct)) ? Number(rewardsConfig.withholdingRatePct) : 0;
     refreshBalanceDisplay();
   }
 
@@ -939,9 +939,9 @@
     const cfg = {
       partnerName: document.getElementById('partnerNameInput').value || '',
       colors: {
-        primary: document.getElementById('primaryColorHex').value || DEFAULT_CONFIG.branding.colors.primary,
-        secondary: document.getElementById('secondaryColorHex').value || DEFAULT_CONFIG.branding.colors.secondary,
-        footer: document.getElementById('footerColorHex').value || DEFAULT_CONFIG.branding.colors.footer
+        primary: document.getElementById('primaryColorHex').value || appConfig.branding?.colors?.primary || '',
+        secondary: document.getElementById('secondaryColorHex').value || appConfig.branding?.colors?.secondary || '',
+        footer: document.getElementById('footerColorHex').value || appConfig.branding?.colors?.footer || ''
       },
       logo: currentLogoValue,
       footerLogo: currentFooterLogoValue,
