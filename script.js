@@ -54,7 +54,7 @@
   let mockAgentPoints = DEFAULT_CONFIG.rewards.agentPoints;
   let mockRewardMinPoints = DEFAULT_CONFIG.rewards.rewardMinPoints;
   let withholdingRatePct = DEFAULT_CONFIG.rewards.withholdingRatePct;
-  let persistedState = { branding: null, passwordHash: '' };
+  let persistedState = { branding: null, user: null, rewards: null, passwordHash: '' };
   let editLauncherVisible = true;
 
   function cloneData(data) {
@@ -141,9 +141,22 @@
     };
   }
 
+  function mergeRemoteStateIntoAppConfig(remoteState) {
+    if (!remoteState) {
+      return appConfig;
+    }
+
+    return {
+      ...appConfig,
+      branding: mergeConfig(appConfig.branding, normalizeBrandingConfig(remoteState.branding) || {}),
+      user: mergeConfig(appConfig.user, remoteState.user || {}),
+      rewards: mergeConfig(appConfig.rewards, remoteState.rewards || {})
+    };
+  }
+
   async function loadPersistedState() {
     if (!hasRemotePersistence()) {
-      persistedState = { branding: null, passwordHash: '' };
+      persistedState = { branding: null, user: null, rewards: null, passwordHash: '' };
       return persistedState;
     }
 
@@ -154,11 +167,13 @@
       const remoteBranding = data.branding || data.config || null;
       persistedState = {
         branding: normalizeBrandingConfig(remoteBranding),
+        user: data.user || null,
+        rewards: data.rewards || null,
         passwordHash: data.passwordHash || ''
       };
     } catch (error) {
       console.warn('No se pudo leer npoint.', error);
-      persistedState = { branding: null, passwordHash: '' };
+      persistedState = { branding: null, user: null, rewards: null, passwordHash: '' };
     }
 
     return persistedState;
@@ -177,6 +192,8 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           config: serializeBrandingConfig(persistedState.branding),
+          user: persistedState.user,
+          rewards: persistedState.rewards,
           passwordHash: persistedState.passwordHash
         })
       });
@@ -363,6 +380,7 @@
       return;
     }
 
+    flushPendingSave();
     setEditLauncherVisibility(false);
   }
   document.addEventListener('keydown', (e) => {
@@ -372,6 +390,7 @@
       if (panel.classList.contains('open')) {
         panel.classList.remove('open');
         document.body.classList.remove('panel-open');
+        flushPendingSave();
       }
       setEditLauncherVisibility(!editLauncherVisible);
     }
@@ -910,6 +929,12 @@
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => { saveConfigToStorage(); }, 700);
   }
+  function flushPendingSave() {
+    if (suspendAutoSave) return;
+    clearTimeout(saveTimer);
+    saveTimer = null;
+    void saveConfigToStorage();
+  }
   async function saveConfigToStorage() {
     const cfg = {
       partnerName: document.getElementById('partnerNameInput').value || '',
@@ -933,9 +958,9 @@
       fakeToast('No se pudo guardar la personalización en npoint');
     }
   }
-  async function loadConfigFromStorage() {
-    const state = await loadPersistedState();
-    const storedBranding = state.branding;
+  async function loadConfigFromStorage(state = null) {
+    const activeState = state || await loadPersistedState();
+    const storedBranding = activeState.branding;
     const activeBranding = storedBranding && Object.keys(storedBranding).length > 0
       ? mergeConfig(appConfig.branding, storedBranding)
       : appConfig.branding;
@@ -989,9 +1014,11 @@
   async function initializeApp() {
     appConfig = await loadAppConfig();
     storageConfig = mergeConfig(DEFAULT_CONFIG.storage, appConfig.storage || {});
+    const remoteState = await loadPersistedState();
+    appConfig = mergeRemoteStateIntoAppConfig(remoteState);
     applyUserConfig();
     applyRewardsConfig();
-    await loadConfigFromStorage();
+    await loadConfigFromStorage(remoteState);
     setFooterYears();
     renderInlineIcons();
     updateProfileCompletion();
