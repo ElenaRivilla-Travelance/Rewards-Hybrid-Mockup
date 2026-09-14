@@ -1,0 +1,3068 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travelance Rewards — Mockup</title>
+<meta name="referrer" content="no-referrer">
+<style>
+  /* ============================================================
+     VARIABLES DE PERSONALIZACIÓN POR PARTNER
+     Cambia estos valores (o usa el panel "Editar") para generar
+     una variante de marca distinta sin tocar nada más del código.
+     ============================================================ */
+  :root {
+    --color-primary-club: #0F6E6A;
+    --color-secondary-club: #0B5652;
+    --color-footer-bg: #123832;
+    --color-travelance: var(--color-primary-club);
+    --grey-stp: #767676;
+    --color-text: #50535B;
+    --color-quaternary: #F7F7F8;
+    --logo-url: '';
+    --logo-text: 'TRAVELANCE';
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body { overflow-x: hidden; max-width: 100%; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #fff;
+  }
+
+  img { max-width: 100%; height: auto; object-fit: cover; }
+  p { margin: 0; font-size: 14px; }
+  h4 { font-size: 18px; color: #A8A8A7; font-weight: initial; }
+
+  /* ---------- HEADER (añadido para el mock: logo + acceso) ---------- */
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 5%;
+    border-bottom: 1px solid #eee;
+  }
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 36px;
+    flex-shrink: 0;
+  }
+  .header-logo img { max-height: 36px; max-width: 260px; display: block; }
+  .header-logo .logo-fallback {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    color: var(--color-primary-club);
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .header-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .header-nav a {
+    color: #555;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+  }
+  .header-nav a:hover { color: var(--color-primary-club); }
+  @media (max-width: 700px) {
+    .header-nav { display: none; }
+  }
+  .header-state {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .header-divider {
+    width: 1px;
+    height: 28px;
+    background: #ddd;
+  }
+  .user-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.3;
+    cursor: pointer;
+    position: relative;
+    padding: 4px 0;
+  }
+  .user-avatar {
+    width: 32px; height: 32px; flex: 0 0 32px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-primary-club);
+    color: var(--color-primary-club);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .user-chip-text { display: flex; flex-direction: column; }
+  .user-chip-name {
+    color: var(--color-primary-club);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .chevron { font-size: 0.7rem; }
+  .user-chip-sub {
+    color: #999;
+    font-size: 0.68rem;
+    letter-spacing: 0.3px;
+  }
+  .user-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    min-width: 140px;
+    z-index: 50;
+  }
+  .user-menu.open { display: block; }
+  .user-menu a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: #333;
+    text-decoration: none;
+  }
+  .user-menu a i { color: var(--color-primary-club); font-size: 0.8rem; }
+  .user-menu a:hover { background: #f7f7f7; }
+  .btn-access {
+    background-color: var(--color-primary-club);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.65rem 1.4rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .btn-access:hover { background-color: var(--color-secondary-club); }
+
+  /* ---------- LOGIN (pantalla completa, simulado) ---------- */
+  .c-login {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+  .c-login.open { display: flex; }
+  .c-login::after {
+    content: "";
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    background-color: #0006;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .c-login__back-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    background: linear-gradient(135deg, var(--color-primary-club), #123);
+  }
+  .c-login__box {
+    padding: 40px;
+    width: 528px;
+    max-width: calc(100% - 32px);
+    background-color: #fff;
+    box-shadow: 0 24px 48px -12px rgba(16,24,40,0.25);
+    position: relative;
+    box-sizing: border-box;
+    border-radius: 20px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .c-login__box::-webkit-scrollbar { display: none; }
+  .login-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    border: none;
+    background: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: #888;
+  }
+  .ma-login-head { margin-bottom: 2rem; }
+  #loginLogoContent img, #loginLogoContent svg {
+    width: 220px; height: 56px; object-fit: contain;
+  }
+  .login-logo-fallback {
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1.5rem;
+    color: var(--color-primary-club);
+  }
+  .register-section:not(:last-child) { margin-bottom: 1rem; }
+  .register-section h2 {
+    color: #50535B; margin-bottom: 0.8rem; font-size: 19px; font-weight: 600;
+  }
+  .register-section p {
+    margin-bottom: 1rem; font-size: 14px; color: #50535B;
+  }
+  .info-icon {
+    display: inline-flex; font-size: 11px; color: #50535B;
+    border: 1px solid #50535B; border-radius: 50%;
+    justify-content: center; align-items: center; cursor: help;
+    padding: 0.5rem; width: 10px; height: 10px;
+    vertical-align: middle;
+  }
+  .btn-register {
+    display: block; padding: 12px 20px; width: 100%;
+    font-size: 16px; color: #fff; background-color: var(--color-primary-club);
+    text-decoration: none; border: none; border-radius: 6px;
+    transition: background-color 0.3s; text-align: center; cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-register:hover { background-color: var(--color-secondary-club); }
+  .separator { display: flex; align-items: center; text-align: center; width: 100%; margin: 14px 0; }
+  .separator .line { flex-grow: 1; border: none; border-top: 1px solid #ccc; margin: 0 10px; }
+  .separator .text { font-size: 14px; color: #666; }
+  .ma-field { margin-bottom: 1.1rem; }
+  .ma-field label { display: block; font-size: 13px; color: #50535B; margin-bottom: 6px; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+  .input-with-icon { position: relative; }
+  .input-with-icon input { padding-right: 34px; }
+  .input-with-icon .tooltip-wrapper {
+    position: absolute; top: 50%; right: 12px; transform: translateY(-50%); margin-left: 0;
+  }
+  .ma-field input {
+    width: 100%; border: 1px solid #C4C4C4; border-radius: 6px;
+    padding: 11px 14px; font-family: 'Inter', sans-serif; font-size: 0.9rem;
+    box-sizing: border-box;
+  }
+  .ma-field input:focus { outline: none; border-color: var(--color-primary-club); }
+  .ma-field select {
+    width: 100%; border: 1px solid #C4C4C4; border-radius: 6px;
+    padding: 11px 14px; font-family: 'Inter', sans-serif; font-size: 0.9rem;
+    box-sizing: border-box; background: #fff; cursor: pointer;
+  }
+  .ma-field select:focus { outline: none; border-color: var(--color-primary-club); }
+  .ma-submit-form {
+    margin-top: 0.5rem; width: 100%; height: 45px; color: #fff;
+    background-color: var(--color-primary-club); font-size: 16px;
+    border: none; border-radius: 6px; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: background-color 0.3s;
+  }
+  .ma-submit-form:hover { background-color: var(--color-secondary-club); }
+  .ma-submit-form:disabled { opacity: 0.6; cursor: not-allowed; }
+  .forgot-password { display: flex; justify-content: center; margin-top: 1.5rem; }
+  .forgot-password a {
+    cursor: pointer; text-decoration: underline; font-size: 14px; color: #50535B;
+  }
+  @media (max-width: 767px) {
+    .c-login__box { padding: 28px; }
+    #loginLogoContent img, #loginLogoContent svg { width: 160px; height: 44px; }
+  }
+
+  /* ---------- SIGN UP (solo visual) ---------- */
+  .c-login__box--wide {
+    width: 900px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .c-login__box--wide::-webkit-scrollbar { display: none; }
+  #signupLogoContent img, #signupLogoContent svg,
+  #agencyLogoContent img, #agencyLogoContent svg {
+    width: 200px; height: 52px; object-fit: contain;
+  }
+  .h-txt { font-weight: 600; }
+  .c-inputs { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+  .c-inputs .ma-field.full-width { flex: 1 1 30%; min-width: 160px; margin-bottom: 0; }
+  .agency-text { margin: 1rem 0 0.5rem 0; font-weight: 600; font-size: 15px; color: #50535B; }
+  .agency-form-hint { font-size: 13px; color: #50535B; margin: 0.6rem 0 1rem 0; }
+  .agency-link { color: var(--color-primary-club); cursor: pointer; font-weight: 600; }
+  .agency-link:hover { text-decoration: underline; }
+  .fiscal-data-text { font-size: 12px; color: #50535B; font-weight: 600; margin: 0.4rem 0 1rem 0; }
+  .c-check-conditions { margin: 1rem 0; }
+  .c-check-conditions .ma-footer-text { font-size: 12px; color: #50535B; margin-bottom: 0.5rem; display: block; }
+  .c-check-conditions .text-foot { font-size: 10px; color: #999; }
+  .c-check-conditions a { color: var(--color-primary-club); }
+  .terms-checkbox { margin-right: 6px; vertical-align: middle; }
+
+  .tooltip-wrapper { position: relative; display: inline-flex; margin-left: 6px; }
+  .tooltip-wrapper .info-icon {
+    width: 14px; height: 14px; font-size: 10px; position: relative; cursor: help;
+  }
+  .tooltip-content {
+    opacity: 0; pointer-events: none; visibility: hidden;
+    position: absolute; top: 130%; left: 50%; transform: translateX(-50%);
+    width: 240px; background: #fff; color: #50535B;
+    border: 1px solid #ccc; border-radius: 6px; padding: 0.8rem;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    transition: opacity 0.15s ease; z-index: 30; text-align: left;
+  }
+  .tooltip-content p { margin-bottom: 0.4rem; font-size: 12.5px; }
+  .tooltip-content ul { margin: 0; padding-left: 16px; }
+  .tooltip-content li { font-size: 12.5px; margin-bottom: 3px; }
+  .info-icon:hover .tooltip-content { opacity: 1; visibility: visible; pointer-events: auto; }
+
+  .signup-footer-link { margin-top: 1rem; text-align: center; }
+  .txt-login { font-size: 14px; }
+  .txt-login a { color: var(--color-primary-club); cursor: pointer; text-decoration: underline; }
+
+  .success-banner-inline {
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    gap: 0.8rem; padding: 1rem 0.5rem;
+  }
+  .check-icon {
+    font-size: 32px; background-color: #3ca85e; color: #fff;
+    width: 56px; height: 56px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .success-message { font-size: 18px; font-weight: 600; }
+  .success-subtext { font-size: 14px; color: #666; max-width: 380px; }
+  .confirmation-steps { text-align: left; max-width: 380px; font-size: 13.5px; color: #666; padding-left: 0; }
+  .confirmation-steps li { list-style: none; position: relative; padding-left: 22px; margin-bottom: 8px; }
+  .confirmation-steps li::before { content: "✔"; position: absolute; left: 0; color: #3ca85e; font-weight: 600; }
+  .button-steps {
+    background-color: #3ca85e; color: #fff; font-size: 15px; padding: 10px 24px;
+    border: none; border-radius: 6px; cursor: pointer; width: 100%; max-width: 320px;
+    transition: background-color 0.2s ease;
+  }
+  .button-steps:hover { background-color: #2e8749; }
+
+  /* Diálogo de alta de agencia */
+  .agency-dialog-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    z-index: 300; align-items: center; justify-content: center;
+  }
+  .agency-dialog-overlay.open { display: flex; }
+  .agency-dialog-box {
+    background: #fff; border-radius: 12px; width: 90%; max-width: 560px;
+    max-height: calc(100vh - 48px); overflow-y: auto; padding: 2rem;
+    position: relative; box-sizing: border-box;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .agency-dialog-box::-webkit-scrollbar { display: none; }
+  .dialog-header-content { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+  .dialog-header-title { font-weight: 600; color: #50535B; font-size: 1.1rem; }
+  .dialog-intro { font-size: 13.5px; color: #666; margin-bottom: 1.2rem; }
+  .section-title {
+    color: #50535B; font-size: 15px; font-weight: 600;
+    margin: 1.2rem 0 0.8rem 0; padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--color-primary-club);
+  }
+  .full-width-container { margin-bottom: 0.8rem; }
+  .dialog-actions {
+    display: flex; justify-content: flex-end; gap: 1rem;
+    margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee;
+  }
+  .dialog-actions .btn-register { width: auto; padding: 10px 20px; }
+  .btn-secondary {
+    background-color: #fff !important; color: #50535B !important;
+    border: 1px solid #ccc !important;
+  }
+  .btn-secondary:hover { background-color: #f5f5f5 !important; }
+
+  /* Spinner de envío */
+  .submit-spinner-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+    z-index: 400; align-items: center; justify-content: center;
+  }
+  .submit-spinner-overlay.open { display: flex; }
+  .overlay-spinner {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 5px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 767px) {
+    .c-login__box--wide { padding: 20px; }
+    .c-inputs .ma-field.full-width { flex: 1 1 100%; }
+  }
+
+  /* ---------- VISTA REWARDS ---------- */
+  .c-rewards-list { width: 85%; margin: 2.5rem auto 3rem auto; min-height: 60vh; }
+  .title-club {
+    color: var(--color-travelance);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1.6rem;
+  }
+  .balance-container { margin: 1.5rem 0 2rem 0; }
+  .txt-balance { color: var(--color-text); font-size: 1.3rem; }
+  .txt-balance span { font-weight: 600; color: var(--color-primary-club); }
+  .info-rewards { font-size: 14px; margin-top: 0.8rem; display: flex; align-items: center; }
+  .info-rewards p { font-size: 13px; color: var(--grey-stp); }
+  .pi-info-circle { margin-right: 4px; font-size: 14px; color: var(--grey-stp); }
+  .bold { font-weight: 600; }
+
+  .pricing-container { display: flex; flex-direction: row; gap: 2rem; flex-wrap: wrap; }
+  .pricing-card {
+    width: 280px; flex: 0 0 280px; background: #fff; border-radius: 8px; padding: 2rem;
+    text-align: center; outline: 1px solid #ececec;
+    filter: drop-shadow(0px 4px 5px rgba(0,0,0,.1));
+    height: fit-content;
+  }
+  .pricing-card img { width: 70px; height: auto; display: block; margin: 0 auto 1rem; border-radius: 8px; }
+  .pricing-title { text-align: center; color: var(--color-primary-club); font-size: 1.5rem; margin-bottom: 1rem; }
+  .c-info-section { margin: 1rem 0; }
+  .c-info-section p { color: #333; line-height: 1.8; font-size: 14px; }
+  .min-rewards { font-weight: 600 !important; }
+  .c-btn { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 2rem; }
+  .btn-add {
+    padding: 0.7rem 1rem; background-color: var(--color-primary-club); border: none; color: #fff;
+    font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    gap: 10px; transition: background 0.3s; border-radius: 6px; font-family: 'Inter', sans-serif; font-weight: 600;
+  }
+  .btn-add:hover { background: var(--color-secondary-club); }
+  .btn-add:disabled { opacity: 0.6; cursor: not-allowed; }
+  .btn-cancel {
+    padding: 0.7rem 1rem; background-color: #E3E3E3; border: none; color: #333;
+    font-size: 14px; cursor: pointer; border-radius: 6px; font-family: 'Inter', sans-serif; font-weight: 600;
+  }
+  .btn-cancel:hover { background: #d5d5d5; }
+  .btn-cancel-red {
+    padding: 0.7rem 1rem; background-color: var(--color-primary-club); border: none; color: #fff;
+    font-size: 14px; cursor: pointer; border-radius: 6px; font-family: 'Inter', sans-serif; font-weight: 600;
+  }
+  .btn-cancel-red:hover { background: var(--color-secondary-club); }
+
+  .c-list-rewards { width: 100%; flex: 1 1 500px; }
+
+  .modal {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    align-items: center; justify-content: center; z-index: 900;
+  }
+  .modal.show { display: flex; }
+  .modal-content {
+    background: #fff; padding: 1.8rem; border-radius: 8px; text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); width: 90%; max-width: 450px;
+  }
+  .modal-content h2 { color: var(--color-travelance); font-weight: 600; margin-bottom: 1rem; font-size: 1.2rem; }
+  .error-text { color: #c0392b; font-size: 0.8rem; margin: 0.6rem 0 0 0; }
+  .modal-content p { font-size: 14px; color: var(--color-text); }
+  .withholding-info { margin-top: 1rem; text-align: center; }
+
+  .tooltip-backdrop {
+    display: none; position: fixed; inset: 0; z-index: 950; background: transparent;
+  }
+  .tooltip-backdrop.show { display: block; }
+  .withholding-tooltip-wrapper {
+    display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    z-index: 951; width: 90%; max-width: 360px;
+  }
+  .withholding-tooltip-wrapper.show { display: block; }
+  .withholding-content {
+    background: #fff; border: 1px solid rgba(0,0,0,.08); padding: 1.3rem; border-radius: 6px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.08); color: var(--color-text); line-height: 1.4; text-align: left;
+  }
+  .withholding-content h3 { font-size: 15px; margin: 0 0 0.4rem 0; color: var(--color-primary-club); font-weight: 600; }
+  .withholding-content ul { margin: 0 0 0.6rem 0; padding-left: 1.1rem; }
+  .withholding-content li, .withholding-content p { margin-bottom: 6px; font-size: 13px; color: var(--color-text); }
+
+  .b-table { margin-bottom: 1rem; }
+  .b-table table { width: 100%; border-collapse: collapse; text-align: center; table-layout: fixed; }
+  .b-table thead { background-color: var(--color-primary-club); color: #fff; }
+  .b-table thead th { text-align: center; padding: 14px 10px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; }
+  .b-table tbody { border: 1px solid #B0BEC5; }
+  .b-table tbody td { text-align: center; padding: 0.8rem; border-bottom: 1px solid #B0BEC5; vertical-align: middle; font-family: 'Inter', sans-serif; font-size: 14px; }
+  .validated-tag, .in-progress-tag, .incidence-tag {
+    padding: 0.5rem 1rem; border-radius: 20px; font-weight: 600; font-family: 'Inter', sans-serif; font-size: 13px; display: inline-block;
+  }
+  .validated-tag { color: #2e8749; background: #eafaf0; }
+  .in-progress-tag { color: #b8860b; background: #fff8e6; }
+  .incidence-tag { color: #c0392b; background: #fdecea; }
+
+  @media (max-width: 900px) {
+    .c-rewards-list { width: 92%; }
+    .pricing-card { width: 100%; flex-basis: 100%; }
+    .b-table {
+      max-height: 60vh; overflow-y: auto; overflow-x: auto;
+      white-space: nowrap; display: block;
+    }
+  }
+
+  /* ---------- VISTA RESERVAS ---------- */
+  .reservations-main { width: 85%; margin: 2.5rem auto 3rem auto; min-height: 60vh; }
+  .title-container { display: flex; flex-direction: row; align-items: center; margin-bottom: 1rem; }
+  .icon-title { margin-left: 0.6rem; cursor: pointer; color: var(--grey-stp); font-size: 20px; }
+  .c-info-table {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;
+  }
+  .info-travels { font-size: 14px; margin-top: 0.8rem; display: flex; align-items: center; }
+  .info-travels p { font-size: 13px; color: var(--grey-stp); }
+
+  .c-filters-add { display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .c-filters-table { display: flex; flex-direction: row; justify-content: flex-end; align-items: center; flex-wrap: wrap; }
+  .filter-container { display: flex; flex-direction: row; align-items: center; justify-content: flex-end; }
+  .filter-container label { color: var(--grey-stp); margin-right: 0.6rem; font-size: 14px; font-weight: 600; }
+  .vertical-divider { width: 2px; height: 32px; background: var(--color-primary-club); margin: 0 16px; }
+  .style-inputs {
+    padding: 0.55rem 0.7rem !important; background: #fff !important;
+    border: 1px solid #B0BEC5 !important; border-radius: 4px !important; outline: none;
+    font-family: 'Inter', sans-serif; font-size: 14px; color: #303030; cursor: pointer;
+  }
+
+  .neutral-tag {
+    padding: 0.5rem 1rem; border-radius: 20px; font-weight: 600; font-family: 'Inter', sans-serif;
+    font-size: 13px; display: inline-block; color: #666; background: #f0f0f0;
+  }
+  .provider-logo-img {
+    height: 32px; width: auto; max-width: 110px; object-fit: contain; display: inline-block; vertical-align: middle;
+  }
+  .provider-logo-content { display: inline-flex; align-items: center; justify-content: center; }
+  .provider-logo-content img, .provider-logo-content svg {
+    height: 32px; width: auto; max-width: 110px; object-fit: contain; display: block;
+  }
+  .provider-logo-content .logo-fallback { font-size: 0.85rem; }
+  .expiry-ok { color: #2e8749; font-weight: 600; }
+
+  .high-txt { font-weight: 600; }
+  .form-group { display: flex; flex-direction: column; }
+  .form-group:not(:last-child) { margin-bottom: 1rem; }
+  .form-group label { color: var(--grey-stp); font-weight: 600; text-align: left; margin-bottom: 0.6rem; font-size: 14px; }
+  .label-container-info { display: flex; flex-direction: row; align-items: center; gap: 6px; margin-bottom: 0.4rem; }
+  .label-container-info label { margin-bottom: 0; }
+  .icon-policy { color: var(--grey-stp); font-size: 14px; cursor: help; }
+
+  .title-tooltip-wrapper {
+    display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    z-index: 951; width: 92%; max-width: 560px; max-height: calc(100vh - 48px); overflow-y: auto;
+  }
+  .title-tooltip-wrapper.show { display: block; }
+  .tooltip-title-content {
+    background: #fff; border: 1px solid rgba(0,0,0,.08); padding: 1.5rem; border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.12); color: var(--color-text); line-height: 1.4; text-align: left;
+  }
+  .tooltip-title-content h3 { font-size: 15px; margin: 0.8rem 0 0.5rem 0; color: var(--color-primary-club); font-weight: 600; }
+  .tooltip-title-content h3:first-child { margin-top: 0; }
+  .tooltip-title-content ul { margin: 0 0 0.6rem 0; padding-left: 1.25rem; }
+  .tooltip-title-content li, .tooltip-title-content p { margin-bottom: 8px; font-size: 14px; color: var(--color-text); }
+
+  @media (max-width: 900px) {
+    .reservations-main { width: 92%; }
+    .c-info-table { align-items: flex-start; }
+    .c-filters-add { justify-content: flex-start; width: 100%; }
+    .b-table {
+      max-height: 60vh; overflow-y: auto; overflow-x: auto;
+      white-space: nowrap; display: block;
+    }
+  }
+
+  /* ---------- VISTA CONSULTAS (FAQ) ---------- */
+  .faq-hero { background-color: var(--color-quaternary); padding: 3rem 0 2.5rem; border-bottom: 1px solid #e5e5e5; }
+  .faq-hero__inner { text-align: center; }
+  .faq-hero__title { font-family: 'Inter'; font-weight: 600; font-size: 2.2rem; color: #303030; margin-bottom: 0.75rem; line-height: 1.2; }
+  .faq-hero__subtitle { font-size: 1rem; color: var(--grey-stp); max-width: 600px; margin: 0 auto; line-height: 1.6; }
+  .faq-main { padding: 3rem 0 4rem; }
+  .faq-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 4rem; }
+  .faq-card { border: 1.5px solid #ddd; border-radius: 10px; padding: 1.75rem; background: #fff; display: flex; flex-direction: column; gap: 1rem; }
+  .faq-card__header { display: flex; align-items: center; gap: 1rem; }
+  .faq-card__icon-wrapper {
+    flex-shrink: 0; width: 48px; height: 48px; border-radius: 10px;
+    background-color: var(--color-primary-club); display: flex; align-items: center; justify-content: center;
+  }
+  .faq-card__icon { font-size: 1.3rem; color: #fff; }
+  .faq-card__label { display: block; font-size: 0.7rem; font-weight: 600; color: var(--grey-stp); letter-spacing: 1.2px; margin-bottom: 2px; }
+  .faq-card__title { font-weight: 600; font-size: 0.95rem; color: #303030; line-height: 1.3; margin: 0; }
+  .faq-card__description { font-size: 0.875rem; color: var(--grey-stp); line-height: 1.55; border-bottom: 1px solid #eee; padding-bottom: 0.75rem; }
+  .faq-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
+  .faq-item { border-bottom: 1px solid #f0f0f0; }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-item--open .faq-item__question { color: var(--color-primary-club); }
+  .faq-item--open .faq-item__chevron { color: var(--color-primary-club); transform: rotate(180deg); }
+  .faq-item__question {
+    width: 100%; display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem;
+    padding: 0.75rem 0; background: transparent; border: none; cursor: pointer; text-align: left;
+    font-size: 0.9rem; font-weight: 600; color: #303030; line-height: 1.4; transition: color 0.2s ease;
+    font-family: 'Inter', sans-serif;
+  }
+  .faq-item__question:hover { color: var(--color-primary-club); }
+  .faq-item__chevron { flex-shrink: 0; font-size: 0.9rem; margin-top: 1px; color: var(--grey-stp); transition: color 0.2s ease, transform 0.2s ease; display: inline-block; }
+  .faq-item__answer { display: none; padding: 0 0 0.85rem 0; }
+  .faq-item--open .faq-item__answer { display: block; }
+  .faq-item__answer p { font-size: 0.875rem; color: var(--grey-stp); line-height: 1.65; margin: 0; }
+
+  .faq-contact { display: flex; align-items: flex-start; gap: 3rem; flex-wrap: wrap; border-top: 1px solid #e5e5e5; padding-top: 3rem; }
+  .faq-contact__text { flex: 1 1 340px; }
+  .faq-contact__title { font-family: 'Inter'; font-weight: 600; font-size: 1.75rem; color: #303030; margin-bottom: 1rem; line-height: 1.3; }
+  .faq-contact__desc { font-size: 0.95rem; color: var(--grey-stp); line-height: 1.7; }
+  .faq-contact__form { flex: 1 1 340px; display: flex; flex-direction: column; gap: 0.75rem; }
+  .faq-contact__check { display: flex; flex-direction: column; align-items: flex-start; font-size: 0.875rem; color: #303030; }
+  .faq-contact__submit { margin-top: 0.5rem; }
+
+  @media (max-width: 1024px) { .faq-hero .body-generic, .faq-main.body-generic { width: 88%; } }
+  @media (max-width: 768px) {
+    .faq-hero .body-generic, .faq-main.body-generic { width: 92%; }
+    .faq-hero__title { font-size: 1.8rem; }
+    .faq-grid { grid-template-columns: 1fr; }
+    .faq-contact { flex-direction: column; gap: 2rem; }
+  }
+
+  /* ---------- VISTA PERFIL DE USUARIO ---------- */
+  .c-profile { width: 60%; margin: 2rem auto 3rem auto; min-height: 60vh; }
+  .profile-header { display: flex; align-items: center; gap: 1.25rem; margin: 2rem 0; }
+  .avatar-wrap { position: relative; width: 76px; height: 76px; flex-shrink: 0; }
+  .avatar-ring {
+    position: absolute; inset: 0; border-radius: 50%;
+    background: conic-gradient(var(--color-primary-club) calc(var(--pct, 0) * 1%), #E5E7EB 0);
+    display: flex; align-items: center; justify-content: center; transition: background 0.4s ease;
+  }
+  .avatar-inner { width: 64px; height: 64px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; }
+  .avatar-inner .pi-user { font-size: 1.9rem; color: var(--color-primary-club); }
+  .header-text h1 { font-size: 24px; margin: 0 0 5px; color: #333; font-weight: 600; font-family: 'Inter', sans-serif; }
+  .header-meta { font-size: 0.85rem; color: #6B7280; }
+  .header-meta strong { color: var(--color-primary-club); font-weight: 600; }
+
+  .profile-layout { display: grid; grid-template-columns: 240px 1fr; gap: 2rem; align-items: start; }
+  .side-nav {
+    position: sticky; top: 5rem; display: flex; flex-direction: column; gap: 0.25rem;
+    background: #fff; border: 1px solid #E5E7EB; border-radius: 16px; padding: 0.75rem;
+  }
+  .side-nav a {
+    display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.75rem; border-radius: 8px;
+    font-size: 0.85rem; font-weight: 500; color: #6B7280; text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .side-nav a i { font-size: 0.9rem; opacity: 0.7; }
+  .side-nav a:hover { background: color-mix(in srgb, var(--color-primary-club) 12%, #fff); color: var(--color-primary-club); }
+  .side-progress { margin-top: 0.5rem; padding: 0.85rem 0.75rem 0.15rem; border-top: 1px solid #E5E7EB; }
+  .side-progress-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: #6B7280; margin-bottom: 0.4rem; }
+  .side-progress-label b { color: #333; font-weight: 600; }
+  .side-progress-bar { height: 6px; border-radius: 4px; background: #E5E7EB; overflow: hidden; }
+  .side-progress-fill { height: 100%; background: var(--color-primary-club); border-radius: 4px; transition: width 0.4s ease; }
+
+  .main-content { display: flex; flex-direction: column; gap: 1.25rem; }
+  .card { background: #fff; border: 1px solid #E5E7EB; border-radius: 16px; padding: 1.5rem 1.75rem 1.75rem; scroll-margin-top: 6rem; }
+  .profile-card-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.4rem; }
+  .card-icon {
+    width: 36px; height: 36px; border-radius: 10px; background: color-mix(in srgb, var(--color-primary-club) 12%, #fff);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .card-icon i { font-size: 1rem; color: var(--color-primary-club); }
+  .profile-card-header h2 { font-size: 1rem; font-weight: 700; margin: 0; color: #333; }
+  .profile-card-header p { margin: 0; font-size: 0.78rem; color: #9AA0A8; }
+
+  .g-inputs { display: flex; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+  .g-inputs .ma-field.full-width { flex: 1 1 0; width: 100%; margin-bottom: 0; }
+  .g-inputs.half-width .ma-field.full-width { flex: 1 1 32%; width: 32%; }
+  .w-agency { width: 100%; margin-bottom: 0; }
+
+  .c-gender { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .gender-label { font-size: 0.85rem; font-weight: 600; color: #333; margin-bottom: 0; }
+  .pill-group { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+  .pill-group input { display: none; }
+  .pill-group label {
+    padding: 0.55rem 1.1rem; border: 1px solid #E5E7EB; border-radius: 999px; font-size: 0.85rem;
+    font-weight: 600; color: #6B7280; cursor: pointer; transition: all 0.15s ease; margin-bottom: 0;
+  }
+  .pill-group input:checked + label { background: var(--color-primary-club); border-color: var(--color-primary-club); color: #fff; }
+
+  .form-actions {
+    margin-top: 0.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    flex-wrap: wrap; background: #fff; border: 1px solid #E5E7EB; border-radius: 16px; padding: 1rem 1.5rem;
+  }
+  .form-actions .msg { font-size: 0.82rem; color: #6B7280; display: flex; align-items: center; gap: 6px; }
+  .form-actions .msg i { color: #9AA0A8; }
+  .form-actions .msg.msg-ok i, .form-actions .msg.msg-ok { color: #2e8749; }
+
+  @media (max-width: 1250px) {
+    .profile-layout { grid-template-columns: 1fr; }
+    .side-nav { position: sticky; top: 0; z-index: 10; flex-direction: row; overflow-x: auto; align-items: center; }
+    .side-nav a { white-space: nowrap; }
+    .side-progress { display: none; }
+  }
+  @media (max-width: 950px) {
+    .c-profile { width: 92%; }
+    .g-inputs { flex-direction: column; align-items: stretch; }
+    .g-inputs .ma-field.full-width, .w-agency { flex: 1 1 100%; width: 100%; }
+  }
+  @media (max-width: 480px) {
+    .form-actions { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+    .form-actions .msg { justify-content: center; }
+  }
+
+  /* ---------- CONTENIDO ORIGINAL (adaptado del componente Home) ---------- */
+  .title-contact {
+    width: 85%;
+    font-family: 'Inter';
+    font-weight: initial;
+    font-size: 35px;
+    line-height: 1.2em;
+    text-align: left;
+    color: #303030;
+    padding-bottom: 1.2rem;
+  }
+
+  .main-container { margin: 2.5rem auto 0 auto; background-color: #fff; }
+
+  .content-section { margin-bottom: 40px; }
+  .content-text { font-size: 1rem; color: #303030; margin-bottom: 1rem; }
+  .highlight { font-weight: 600; color: #333; }
+  .red-highlight { color: var(--color-primary-club); font-weight: 600; }
+
+  .partners-section { margin: 40px 0; }
+  .partners-grid, .c-logos-partners {
+    display: flex; flex-wrap: wrap; column-gap: 50px; row-gap: 30px;
+  }
+  .partners-grid .logo-box, .c-logos-partners .logo-box {
+    display: flex; align-items: center; justify-content: center;
+    height: 40px; flex: 0 0 auto; max-width: 130px; min-width: 110px;
+    background: #f2f2f2; border-radius: 6px; color: #999;
+    font-size: 0.75rem; font-family: 'Inter', sans-serif; padding: 0 10px;
+    text-align: center;
+  }
+  .c-logos-partners { row-gap: 50px; column-gap: 70px; }
+
+  .info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+    margin: 20px 0;
+  }
+  .info-card { border: 2px solid #333; border-radius: 8px; padding: 30px; background: #fff; }
+  .card-header { text-align: center; margin-bottom: 20px; }
+  .card-category {
+    font-size: 0.8rem; font-weight: 600; color: #666;
+    letter-spacing: 1px; margin-bottom: 0.5rem;
+  }
+  .card-title { font-size: 35px; color: #333; font-family: 'Inter'; font-weight: initial; }
+  .card-content ul { list-style: none; padding: 0; }
+  .card-content li { margin-bottom: 15px; font-size: 0.95rem; color: #666; }
+  .card-content .bullet-point { font-weight: 600; color: #333; margin-bottom: 5px; }
+
+  .body-generic { width: 70%; margin: auto; }
+
+  .banner-container { position: relative; width: 100%; height: 410px; overflow: hidden; }
+  .banner {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0; transition: opacity 0.5s ease-in-out;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-family: 'Inter', sans-serif; font-size: 1.4rem; font-weight: 600;
+    text-align: center;
+  }
+  .banner.active { opacity: 1; z-index: 1; }
+  .banner.slide1 { background: linear-gradient(135deg, var(--color-primary-club), #123); }
+  .banner.slide2 { background: linear-gradient(135deg, #333, var(--color-secondary-club)); }
+  .banner.slide3 { background: linear-gradient(135deg, var(--color-secondary-club), #555); }
+
+  .control {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    color: #fff; border: none; cursor: pointer; z-index: 10;
+    background-color: transparent; font-size: 40px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .control:hover { color: var(--color-primary-club); }
+  .control span {
+    height: 52px; background-color: rgba(0,0,0,.40);
+    padding: 0 7px; border-radius: 2px;
+  }
+  .control.prev { left: 10px; }
+  .control.next { right: 10px; }
+
+  .indicators {
+    position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
+    display: flex; justify-content: center; z-index: 10;
+  }
+  .indicator {
+    width: 10px; height: 10px; margin: 0 5px; border-radius: 50%;
+    background-color: #ccc; cursor: pointer;
+  }
+  .indicator.selected { background-color: var(--color-primary-club); }
+
+  .banner-whatsapp-container {
+    background-color: var(--color-primary-club);
+    padding: 2rem;
+    margin: 4em 0;
+  }
+  .content-wrapper { max-width: 800px; margin: 0 auto; text-align: center; }
+  .main-heading {
+    font-size: 35px; color: #fff; font-family: 'Inter';
+    font-weight: initial; line-height: 1.2; margin-bottom: 1rem;
+  }
+  .description-text {
+    color: #fff; font-size: 1rem; margin-bottom: 30px; line-height: 1.5;
+    max-width: 600px; margin-left: auto; margin-right: auto;
+  }
+  .whatsapp-button {
+    display: inline-flex; align-items: center; background-color: #25d366;
+    color: #fff; text-decoration: none; padding: 10px 34px; border-radius: 7px;
+    font-size: 1rem; font-family: 'Inter'; font-weight: 600;
+    transition: background-color 0.3s ease; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border: none; cursor: pointer;
+  }
+  .whatsapp-button:hover { background-color: #128c7e; }
+  .whatsapp-icon { width: 28px; height: 28px; margin-right: 8px; fill: currentColor; }
+  .button-title { font-weight: 600; font-size: 1rem; }
+
+  .link-color { color: var(--color-primary-club); }
+  .line { height: 1px; background-color: #eee; width: 100%; margin: 1rem auto; }
+
+  .c-text-contact { width: 50%; }
+  .c-text-contact span { font-weight: 600; }
+  .contact-form { width: 46%; }
+  .c-contact-form { display: flex; align-items: stretch; gap: 24px; justify-content: space-between; flex-wrap: wrap; }
+  .input-contact, .contact-form textarea {
+    width: 100%; border-radius: 5px; border: 1px solid rgba(36,36,36,0.35);
+    padding: 16px 20px; margin-bottom: 3%; font-family: 'Inter', sans-serif;
+  }
+  .accept-check input[type="checkbox"] + label {
+    display: inline; vertical-align: middle; cursor: pointer;
+    line-height: 1.7em; color: #303030; font-size: 0.9rem;
+  }
+  .terms { font-weight: 600; margin-bottom: 0.5em; color: #303030; }
+  .terms-container { display: flex; align-items: center; }
+  .terms-container input { margin-right: 8px; }
+
+  .btn-send {
+    color: #F6F6F6; border: none; border-radius: 6px;
+    font-size: 15px; font-family: 'Inter'; font-weight: 600;
+    background-color: var(--color-primary-club);
+    padding: 0.7rem 1.5rem; margin-top: 1rem;
+    transition: background-color 0.3s ease; cursor: pointer;
+  }
+  .btn-send:hover { background-color: var(--color-secondary-club); }
+
+  .logos-partners { margin-top: 2rem; }
+  .row-logos { margin-bottom: 3rem; }
+  .title-partners { margin-bottom: 1rem; }
+  .title-partners h4 {
+    font-size: 20px; font-weight: initial; text-transform: uppercase;
+    color: var(--color-primary-club);
+  }
+
+  /* ---------- FOOTER (componente real) ---------- */
+  .c-footer {
+    margin-top: 1%;
+    background-color: var(--color-footer-bg);
+    color: #ffffff;
+    padding: 54px 0;
+  }
+  .c-footer-items {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .logo-travelance, .web-map-travelance, .legal-pages, .copyright { width: 25%; }
+  .logo-travelance img,
+  #footerLogoContent img { width: 200px; max-width: 100%; height: auto; }
+  .footer-logo-fallback {
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1.4rem;
+    letter-spacing: 0.5px; color: #fff;
+  }
+  #footerLogoContent svg { max-width: 200px; }
+  .web-map-travelance ul { padding-left: 0 !important; list-style: none; }
+  .web-map-travelance ul li { line-height: 1.7em; font-weight: initial; }
+  .link-web-map { color: #fff; text-decoration: none; font-weight: initial; }
+  .link-web-map:hover { text-decoration: underline; }
+  .legal ul li { list-style: none; }
+  .legal a { display: inline; color: #ffffff; font-weight: initial; line-height: 1.7em; text-decoration: none; }
+  .legal a:hover { text-decoration: underline; }
+  .rrss-travelance { display: flex; align-items: center; gap: 10px; margin-top: 1.2rem; }
+  .rrss-travelance a { cursor: pointer; }
+  .link-rrss {
+    width: 32px; height: 32px; background-color: var(--color-secondary-club);
+    display: flex; align-items: center; justify-content: center;
+    transition: background-color 0.3s ease-in-out;
+  }
+  .rrss-travelance a .link-rrss:hover { background-color: #3C3C3C; }
+  .yt-icon, .linkedin-travelance { fill: #fff; }
+  .link-rrss svg { width: 20px; }
+  .copyright { display: flex; justify-content: flex-end; align-items: flex-end; }
+  .copyright p { color: #fff; }
+
+  @media (max-width: 900px) {
+    .logo-travelance, .web-map-travelance, .legal-pages, .copyright { width: 100%; }
+    .copyright { margin: 1rem 0; justify-content: flex-start; }
+    .logo-travelance { margin-bottom: 1rem; }
+    .logo-travelance img, #footerLogoContent img { width: 120px; }
+  }
+
+  /* toast falso */
+  .fake-toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: #1f8b4d; color: #fff; padding: 14px 20px; border-radius: 6px;
+    font-family: 'Inter', sans-serif; font-size: 0.9rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    transform: translateY(20px); opacity: 0; pointer-events: none;
+    transition: all 0.3s ease; z-index: 300;
+  }
+  .fake-toast.show { transform: translateY(0); opacity: 1; }
+
+  @media (max-width: 1086px) {
+    .c-text-contact, .contact-form { width: 100%; }
+    .title-contact { width: 85%; font-size: 28px; line-height: 1.1em; }
+  }
+  @media (max-width: 768px) {
+    .body-generic { width: 90%; }
+    .info-cards { grid-template-columns: 1fr; }
+    .banner-container { height: 260px; }
+    .banner { font-size: 1.1rem; padding: 0 1rem; }
+  }
+
+  /* ============================================================
+     PANEL DE EDICIÓN (solo visible en modo "Editar")
+     ============================================================ */
+  .mock-toolbar {
+    position: fixed; bottom: 18px; left: 18px; z-index: 500;
+    display: flex; gap: 8px;
+    transition: opacity 0.2s ease;
+  }
+  .mock-toolbar.toolbar-hidden { display: none; }
+  .mock-toggle-btn {
+    background: rgba(20,20,20,0.45); color: #fff; border: none; border-radius: 50%;
+    width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    opacity: 0.5; transition: opacity 0.2s ease, background 0.2s ease;
+  }
+  .mock-toggle-btn:hover { opacity: 1; background: rgba(20,20,20,0.75); }
+  .edit-panel-close {
+    position: absolute; top: 18px; right: 18px; border: none; background: none;
+    font-size: 1.1rem; cursor: pointer; color: #999; padding: 4px;
+  }
+  .edit-panel-close:hover { color: #333; }
+  .edit-panel {
+    position: fixed; top: 0; right: 0; height: 100%; width: 300px;
+    background: #fff; box-shadow: -4px 0 20px rgba(0,0,0,0.12);
+    z-index: 400; padding: 24px; font-family: 'Inter', sans-serif;
+    transform: translateX(100%); transition: transform 0.25s ease;
+    overflow-y: auto;
+  }
+  .edit-panel.open { transform: translateX(0); }
+  .edit-panel h3 { font-size: 1rem; margin-bottom: 18px; color: #222; }
+  .edit-field { margin-bottom: 18px; }
+  .edit-field label {
+    display: block; font-size: 0.78rem; font-weight: 600; color: #555;
+    margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.4px;
+  }
+  .edit-field input[type="color"] {
+    width: 100%; height: 38px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer;
+  }
+  .color-field-row { display: flex; gap: 8px; align-items: center; }
+  .color-field-row input[type="color"] { width: 46px; flex: 0 0 46px; padding: 2px; }
+  .color-field-row .hex-input {
+    flex: 1; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px;
+    font-family: 'Inter', sans-serif; font-size: 0.85rem; text-transform: uppercase;
+  }
+  .color-field-row .hex-input.invalid { border-color: #e53e3e; }
+  .edit-field input[type="text"] {
+    width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px;
+    font-family: 'Inter', sans-serif; font-size: 0.85rem;
+  }
+  .edit-field .hint { font-size: 0.72rem; color: #999; margin-top: 4px; }
+  .upload-divider {
+    text-align: center; font-size: 0.72rem; color: #bbb;
+    margin: 8px 0; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .upload-btn {
+    display: block; width: 100%; text-align: center; padding: 9px;
+    border: 1px dashed #bbb; border-radius: 6px; background: #fafafa;
+    font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #555;
+    cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .upload-btn:hover { border-color: var(--color-primary-club); background: #f5f5f5; }
+  #logoFileName, #bannerFileName { color: #2a8a4a; font-weight: 600; }
+  .edit-reset {
+    width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ddd;
+    background: #fafafa; cursor: pointer; font-family: 'Inter', sans-serif;
+    font-size: 0.85rem; color: #555;
+  }
+  body.panel-open .site-header,
+  body.panel-open main { margin-right: 300px; transition: margin-right 0.25s ease; }
+</style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header">
+  <div class="header-logo" id="headerLogo">
+    <span id="logoContent"><span class="logo-fallback" id="logoFallback">TRAVELANCE</span></span>
+  </div>
+  <div class="header-right">
+    <!-- Estado invitado (sin sesión) -->
+    <div class="header-state" id="headerGuest">
+      <nav class="header-nav">
+        <a href="#" onclick="showView('consultas'); return false;">Consultas</a>
+      </nav>
+      <button class="btn-access" onclick="openLogin()">Acceder</button>
+    </div>
+    <!-- Estado logueado (tras simular login) -->
+    <div class="header-state" id="headerLogged" style="display:none;">
+      <nav class="header-nav">
+        <a href="#" onclick="showView('home'); return false;">Inicio</a>
+        <a href="#" onclick="showView('rewards'); return false;">Rewards</a>
+        <a href="#" onclick="showView('reservations'); return false;">Reservas</a>
+        <a href="#" onclick="showView('consultas'); return false;">Consultas</a>
+      </nav>
+      <span class="header-divider"></span>
+      <div class="user-chip" onclick="toggleUserMenu()">
+        <span class="user-avatar">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.4c-3.3 0-9.8 1.6-9.8 4.9v2.5h19.6v-2.5c0-3.3-6.5-4.9-9.8-4.9z"/></svg>
+        </span>
+        <div class="user-chip-text">
+          <span class="user-chip-name">Elena Rivilla <i class="pi pi-chevron-down chevron"></i></span>
+          <span class="user-chip-sub">AGENCIAS PENDIENTE...</span>
+        </div>
+        <div class="user-menu" id="userMenu">
+          <a href="#" onclick="event.stopPropagation(); showView('profile'); return false;"><i class="pi pi-user"></i> Ver mi perfil</a>
+          <a href="#" onclick="event.stopPropagation(); simulateLogout(); return false;"><i class="pi pi-sign-out"></i> Cerrar sesión</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= LOGIN (pantalla completa, simulado) ================= -->
+<div class="c-login" id="loginScreen">
+  <div class="c-login__back-media" id="loginBg"></div>
+  <div class="c-login__box">
+    <button class="login-close" onclick="closeLogin()">✕</button>
+    <div class="ma-login-head">
+      <span id="loginLogoContent"><span class="login-logo-fallback">TRAVELANCE</span></span>
+    </div>
+
+    <div class="register-section">
+      <h2>¿Eres un usuario nuevo?</h2>
+      <p>
+        Accede a todas las funcionalidades de <span class="brand-name">Travelance</span> Rewards
+        <span class="info-icon" title="Al registrarte, debes utilizar tus datos personales como el correo y el teléfono.">i</span>
+      </p>
+      <button type="button" class="btn-register" onclick="openSignup()">Crea tu cuenta</button>
+    </div>
+
+    <div class="separator">
+      <hr class="line"><span class="text">O</span><hr class="line">
+    </div>
+
+    <div class="register-section">
+      <h2>Inicia sesión</h2>
+      <form id="loginForm" novalidate onsubmit="return handleLoginSubmit(event)">
+        <div class="ma-field">
+          <label for="loginEmail">Correo electrónico</label>
+          <input id="loginEmail" type="email" placeholder="tucorreo@ejemplo.com">
+        </div>
+        <div class="ma-field">
+          <label for="loginPassword">Contraseña</label>
+          <input id="loginPassword" type="password" placeholder="••••••••">
+        </div>
+        <button type="button" class="ma-submit-form" id="loginSubmitBtn" onclick="handleLoginSubmit(event)">Iniciar sesión</button>
+        <div class="forgot-password">
+          <a onclick="fakeToast('Te enviaríamos un correo para restablecer tu contraseña')">¿Has olvidado tu contraseña?</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SIGN UP (pantalla completa, solo visual) ================= -->
+<div class="c-login" id="signupScreen">
+  <div class="c-login__back-media" id="signupBg"></div>
+  <div class="c-login__box c-login__box--wide" id="signupBoxWrap">
+    <button class="login-close" onclick="closeSignup()">✕</button>
+
+    <div id="signupFormView">
+      <div class="ma-login-head">
+        <span id="signupLogoContent"><span class="login-logo-fallback">TRAVELANCE</span></span>
+      </div>
+
+      <div class="register-section">
+        <h2>Crea tu cuenta</h2>
+        <p>Únete a <span class="brand-name h-txt">Travelance</span><span class="h-txt"> Rewards</span>, el programa de fidelización para agentes de viajes.
+          Regístrate, acumula <span class="h-txt">Travels</span> y canjéalos por tarjetas regalo de Amazon. ¡Inscríbete ahora!</p>
+
+        <form id="signupForm" novalidate onsubmit="return handleSignupSubmit(event)">
+          <div class="c-inputs">
+            <div class="ma-field full-width"><label class="sr-only">Nombre</label><input type="text" placeholder="Nombre"></div>
+            <div class="ma-field full-width"><label class="sr-only">Primer apellido</label><input type="text" placeholder="Primer apellido"></div>
+            <div class="ma-field full-width"><label class="sr-only">Segundo apellido</label><input type="text" placeholder="Segundo apellido"></div>
+          </div>
+
+          <div class="c-inputs">
+            <div class="ma-field full-width"><label class="sr-only">Correo electrónico personal</label><input type="email" placeholder="Correo electrónico personal"></div>
+            <div class="ma-field full-width"><label class="sr-only">Teléfono móvil personal</label><input type="tel" placeholder="Teléfono móvil personal"></div>
+            <div class="ma-field full-width">
+              <label class="sr-only">Contraseña</label>
+              <div class="input-with-icon">
+                <input type="password" placeholder="Contraseña">
+                <span class="tooltip-wrapper">
+                  <span class="info-icon">i
+                    <span class="tooltip-content">
+                      <p>Debe cumplir con los siguientes requisitos:</p>
+                      <ul>
+                        <li>Al menos una letra mayúscula.</li>
+                        <li>Al menos una letra minúscula.</li>
+                        <li>Al menos un número.</li>
+                        <li>No puede estar vacía.</li>
+                      </ul>
+                    </span>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="c-inputs">
+            <div class="ma-field full-width"><label class="sr-only">Confirmar contraseña</label><input type="password" placeholder="Confirmar contraseña"></div>
+            <div class="ma-field full-width">
+              <label class="sr-only">Selecciona país</label>
+              <select>
+                <option disabled selected value="">Selecciona país</option>
+                <option>España</option>
+                <option>Portugal</option>
+                <option>Francia</option>
+                <option>Italia</option>
+                <option>Otro</option>
+              </select>
+            </div>
+          </div>
+
+          <h4 class="agency-text">Selecciona tu agencia *</h4>
+          <div class="ma-field">
+            <input type="text" placeholder="Escribe el nombre, la dirección o el CIF de tu agencia">
+          </div>
+          <p class="agency-form-hint">¿Tu agencia no se encuentra en el listado? <span class="agency-link" onclick="openAgencyDialog()">da de alta tu agencia aquí</span></p>
+
+          <h2>Datos Fiscales</h2>
+          <p>Para gestionar correctamente las obligaciones fiscales asociadas a tus recompensas, necesitamos:</p>
+          <div class="c-inputs fiscal-data-inputs">
+            <div class="ma-field full-width"><label class="sr-only">Fecha de nacimiento</label><input type="date" placeholder="Fecha de nacimiento"></div>
+            <div class="ma-field full-width"><label class="sr-only">DNI/NIF</label><input type="text" placeholder="DNI/NIF"></div>
+            <div class="ma-field full-width">
+              <label class="sr-only">Provincia de residencia</label>
+              <select>
+                <option disabled selected value="">Provincia de residencia</option>
+                <option>Madrid</option>
+                <option>Barcelona</option>
+                <option>Islas Baleares</option>
+                <option>Valencia</option>
+                <option>Otra</option>
+              </select>
+            </div>
+          </div>
+          <p class="fiscal-data-text">Estos datos se utilizarán exclusivamente para la gestión de las obligaciones fiscales derivadas de tus recompensas.</p>
+
+          <div class="c-check-conditions">
+            <p class="ma-footer-text">
+              Antes de registrarte en el Programa, debe leer la <strong>Información básica sobre protección de datos</strong> que se encuentra más abajo. Todos los campos marcados son obligatorios para tramitar su alta. Al pulsar el botón de "Crear cuenta", manifiesta haber leído esta información.
+            </p>
+            <p class="ma-footer-text">
+              <input type="checkbox" class="terms-checkbox" id="signupTerms">
+              <label for="signupTerms">Acepto las <a href="#" target="_blank">Condiciones Generales del Programa de fidelización para agentes de <span class="brand-name">TRAVELANCE</span></a>.</label>
+            </p>
+            <p class="ma-footer-text text-foot">
+              <b>Información básica sobre privacidad:</b> El responsable del tratamiento de sus datos personales es - Stravel Partners S.L.U. Trataremos sus datos para gestionar el programa de fidelización al que se da de alta. Tiene derecho a acceder, rectificar y suprimir los datos, así como otros derechos como se explica en nuestra política de privacidad aplicable al programa de fidelización para agentes. <a href="#" target="_blank"><b>Ver política de privacidad <span class="brand-name">Travelance</span></b></a>
+            </p>
+            <p class="ma-footer-text">
+              <input type="checkbox" class="terms-checkbox" id="signupMarketing">
+              <label for="signupMarketing">Deseo recibir comunicaciones comerciales de <span class="brand-name">TRAVELANCE</span> (STRAVEL PARTNERS, S.L.U.).</label>
+            </p>
+          </div>
+
+          <button type="button" class="btn-register" id="signupSubmitBtn" onclick="handleSignupSubmit(event)">Crear cuenta</button>
+        </form>
+      </div>
+
+      <div class="signup-footer-link">
+        <p class="txt-login">¿Ya tienes cuenta? <a onclick="closeSignup(); openLogin();">Inicia sesión</a></p>
+      </div>
+    </div>
+
+    <!-- Banner de éxito (solo visual) -->
+    <div id="signupSuccessView" class="success-banner-inline" style="display:none;">
+      <span class="check-icon">✔</span>
+      <p class="success-message">¡Tu cuenta se ha registrado correctamente!</p>
+      <p class="success-subtext">Hemos enviado un correo electrónico de confirmación a la dirección que proporcionaste. Para activar tu cuenta, sigue estos pasos:</p>
+      <ul class="confirmation-steps">
+        <li>Abre tu bandeja de entrada y busca nuestro correo de confirmación.</li>
+        <li>Si no lo encuentras, revisa tu carpeta de spam o correo no deseado.</li>
+        <li>Haz clic en el enlace de confirmación dentro del correo para activar tu cuenta.</li>
+      </ul>
+      <button class="button-steps" onclick="closeSignup(); openLogin();">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ALTA DE AGENCIA (diálogo simple, solo visual) ================= -->
+<div class="agency-dialog-overlay" id="agencyDialogOverlay">
+  <div class="agency-dialog-box">
+    <button class="login-close" onclick="closeAgencyDialog()">✕</button>
+    <div id="agencyFormView">
+      <div class="dialog-header-content">
+        <span id="agencyLogoContent"><span class="login-logo-fallback" style="font-size:1.1rem;">TRAVELANCE</span></span>
+        <span class="dialog-header-title">Alta de agencia <span class="brand-name">Travelance</span> Rewards</span>
+      </div>
+      <p class="dialog-intro">Si tu agencia no aparece, completa este formulario y la daremos de alta. Te avisaremos por email cuando todo esté listo.</p>
+      <form id="agencyForm" novalidate onsubmit="return handleAgencySubmit(event)">
+        <h4 class="section-title">Indica el correo donde quieres que se te notifique</h4>
+        <div class="ma-field full-width-container"><label class="sr-only">Correo electrónico</label><input type="email" placeholder="Correo electrónico"></div>
+
+        <h4 class="section-title">Datos de la agencia</h4>
+        <div class="ma-field full-width-container"><label class="sr-only">Nombre de la agencia</label><input type="text" placeholder="Nombre de la agencia"></div>
+        <div class="ma-field full-width-container"><label class="sr-only">Nombre Sociedad</label><input type="text" placeholder="Nombre Sociedad"></div>
+        <div class="ma-field full-width-container"><label class="sr-only">NIF</label><input type="text" placeholder="NIF"></div>
+        <div class="ma-field full-width-container"><label class="sr-only">Dirección completa</label><input type="text" placeholder="Dirección completa"></div>
+        <div class="ma-field full-width-container"><label class="sr-only">Email agencia</label><input type="email" placeholder="Email agencia"></div>
+        <div class="ma-field full-width-container"><label class="sr-only">Grupo</label><input type="text" placeholder="Grupo"></div>
+
+        <h4 class="section-title">Consentimientos</h4>
+        <p class="ma-footer-text">
+          <input type="checkbox" class="terms-checkbox" id="agencyTerms">
+          <label for="agencyTerms">Acepto las <a href="#" target="_blank">Condiciones Generales del Programa de fidelización para agentes de <span class="brand-name">TRAVELANCE</span></a>. *</label>
+        </p>
+        <p class="ma-footer-text text-foot">
+          <b>Información básica sobre privacidad:</b> El responsable del tratamiento de sus datos personales es - Stravel Partners S.L.U.
+          <a href="#" target="_blank"><b>Ver política de privacidad <span class="brand-name">Travelance</span></b></a>
+        </p>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn-register btn-secondary" onclick="closeAgencyDialog()">Cancelar</button>
+          <button type="button" class="btn-register" onclick="handleAgencySubmit(event)">Enviar solicitud</button>
+        </div>
+      </form>
+    </div>
+    <div id="agencySuccessView" class="success-banner-inline" style="display:none;">
+      <span class="check-icon">✔</span>
+      <p class="success-message">¡Solicitud de agencia enviada correctamente!</p>
+      <p class="success-subtext">Hemos recibido tu solicitud de alta de agencia. Nuestro equipo la revisará y te notificaremos por correo electrónico cuando esté lista.</p>
+      <ul class="confirmation-steps">
+        <li>Recibirás una confirmación en la dirección de correo que proporcionaste.</li>
+        <li>El proceso de validación puede tardar entre 24-48 horas hábiles.</li>
+        <li>Una vez aprobada, podrás completar tu registro seleccionando tu agencia en el listado.</li>
+      </ul>
+      <button class="button-steps" onclick="closeAgencyDialog()">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Spinner de envío (solo visual) -->
+<div class="submit-spinner-overlay" id="submitSpinner">
+  <div class="overlay-spinner"></div>
+</div>
+
+<!-- ================= CONTENIDO HOME ================= -->
+<div id="homeView">
+<section class="column1">
+  <div class="banner-container">
+    <div class="banner slide1 active" id="bannerSlide1">Banner promocional 1</div>
+    <div class="banner slide2">Banner promocional 2</div>
+    <div class="banner slide3">Banner promocional 3</div>
+    <button class="control prev" onclick="prevBanner()"><span>‹</span></button>
+    <button class="control next" onclick="nextBanner()"><span>›</span></button>
+    <div class="indicators" id="indicators">
+      <span class="indicator selected" onclick="selectBanner(0)"></span>
+      <span class="indicator" onclick="selectBanner(1)"></span>
+      <span class="indicator" onclick="selectBanner(2)"></span>
+    </div>
+  </div>
+</section>
+
+<main class="main-container">
+  <div class="content-section body-generic">
+    <p class="content-text">
+      Descubre el nuevo <span class="highlight">programa de fidelización exclusivo para agentes de viajes</span>, diseñado para premiarte directamente por tu esfuerzo y dedicación.
+    </p>
+    <p class="content-text">
+      Cada reserva que hagas te hará <span class="highlight">acumular puntos</span> que podrás canjear por <span class="highlight">Tarjetas Amazon</span>. ¡Lo mejor de todo! <span class="highlight">Las recompensas son tuyas</span>, sin importar la agencia con la que trabajes.
+    </p>
+  </div>
+
+  <section class="body-generic">
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="card-header">
+          <div class="card-category">VENTAJAS</div>
+          <h3 class="card-title">¿Por qué unirte?</h3>
+        </div>
+        <div class="card-content">
+          <ul>
+            <li><div class="bullet-point">• Recompensas directas:</div>Gana puntos por cada reserva con las marcas asociadas a Travelance.</li>
+            <li>– Por cada <span class="highlight">100€ de reserva</span> → ¡Sumas <span class="red-highlight">25 Travels</span>!</li>
+            <li>– Por cada <span class="highlight">100 Travels</span> acumulados → ¡Consigue <span class="highlight">1€ listo para canjear por tarjetas regalo de Amazon</span>!.</li>
+            <li><div class="bullet-point">• Fácil de usar:</div>Regístrate, realiza tus reservas, acumula <span class="red-highlight">Travels</span> de forma automática y canjéalos al momento!</li>
+          </ul>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="card-header">
+          <div class="card-category">PASO A PASO</div>
+          <h3 class="card-title">¿Cómo funciona?</h3>
+        </div>
+        <div class="card-content">
+          <ul>
+            <li><div class="bullet-point">• Registro sencillo:</div>Completa tu inscripción y asegúrate un lugar en este programa exclusivo.</li>
+            <li><div class="bullet-point">• Acumula Travels:</div>Realiza reservas con los operadores turísticos asociados a Travelance, ingresa el número de localización en la plataforma, y observa cómo tus puntos crecen.</li>
+            <li><div class="bullet-point">• Canjea tus recompensas:</div>Transforma tus <span class="red-highlight">Travels</span> en <span class="highlight">tarjetas regalo de Amazon</span> y disfruta de tus recompensas.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p>Para más información consulta <a class="link-color" href="#">Condiciones <span class="brand-name">Travelance</span> Rewards.</a></p>
+  </section>
+
+  <div class="line"></div>
+
+  <section class="body-generic c-contact-form">
+    <div class="c-text-contact">
+      <h4 class="subtitle" style="color:#A8A8A7;">Contáctanos</h4>
+      <h3 class="title-contact">¡Esperamos tu mensaje! Nos encanta estar en contacto</h3>
+      <p>Completa nuestro formulario con toda la información necesaria. Una vez recibido, nuestro equipo revisará cuidadosamente tus detalles y nos pondremos en contacto contigo en el menor tiempo posible. <span>¡Te esperamos!</span></p>
+    </div>
+    <form class="contact-form" onsubmit="event.preventDefault(); fakeToast('Formulario enviado correctamente (mock)')">
+      <input type="text" class="input-contact" placeholder="Nombre y apellidos *">
+      <input type="email" class="input-contact" placeholder="Correo electrónico *">
+      <input type="text" class="input-contact" placeholder="Teléfono">
+      <textarea cols="30" rows="6" placeholder="Comentario *" style="width:100%;border-radius:5px;border:1px solid rgba(36,36,36,0.35);padding:16px 20px;margin-bottom:3%;font-family:'Inter',sans-serif;"></textarea>
+      <div class="accept-check">
+        <h3 class="terms">Términos y condiciones</h3>
+        <div class="terms-container">
+          <input type="checkbox" id="acceptPolicies">
+          <label for="acceptPolicies">He leído y acepto la <a class="link-color" href="#">Política de Privacidad</a></label>
+        </div>
+      </div>
+      <button type="button" class="btn-send" onclick="fakeToast('Formulario enviado correctamente (mock)')">Enviar</button>
+    </form>
+  </section>
+
+</main>
+</div>
+<!-- ============ /CONTENIDO HOME ============ -->
+
+<!-- ================= VISTA REWARDS ================= -->
+<div id="rewardsView" style="display:none;">
+  <main class="c-rewards-list">
+    <h1 class="title-club">Recompensas</h1>
+
+    <div class="balance-container">
+      <p class="txt-balance"><span>Saldo disponible:</span> <span id="agentPointsDisplay">1.500</span></p>
+      <div class="info-rewards">
+        <i class="pi pi-info-circle"></i>
+        <p><span class="bold">Plazo estimado de entrega:</span> una vez solicitada tu recompensa, la recibirás en un plazo máximo de <span class="bold">7 días</span> naturales</p>
+      </div>
+    </div>
+
+    <div class="pricing-container">
+      <div class="pricing-card">
+        <img src="data:image/png;base64,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" alt="Tarjeta Amazon">
+        <h2 class="pricing-title">Tarjeta amazon</h2>
+        <div class="c-info-section">
+          <p>Cada 1000 travels acumulados, obtendrás 10€ en tus recompensas.</p>
+          <p class="min-rewards">Travels mínimos: 1.000</p>
+        </div>
+        <div class="c-btn">
+          <button class="btn-add" onclick="openRewardModal()">Canjear recompensa</button>
+        </div>
+      </div>
+
+      <div class="c-list-rewards">
+        <div class="table-container">
+          <div class="b-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tipo de recompensa</th>
+                  <th>Solicitud</th>
+                  <th>Estado</th>
+                  <th>Travels canjeados</th>
+                </tr>
+              </thead>
+              <tbody id="rewardsTableBody">
+                <tr>
+                  <td>Tarjeta amazon</td>
+                  <td>02/06/2026</td>
+                  <td><span class="validated-tag">Validado</span></td>
+                  <td>1.000,00</td>
+                </tr>
+                <tr>
+                  <td>Tarjeta amazon</td>
+                  <td>15/03/2026</td>
+                  <td><span class="in-progress-tag">En proceso</span></td>
+                  <td>500,00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de confirmación de canje -->
+    <div class="modal" id="rewardModal">
+      <div class="modal-content">
+        <h2>¿Te gustaría canjear esta recompensa?</h2>
+        <p>Canjearás <span id="modalPoints">1.500</span> travels de tu saldo para obtener <span class="bold" id="modalGross">15,00 €.</span></p>
+        <p class="withholding-info">
+          Se aplicará una retención fiscal de <span class="bold" id="modalWithholding">0,30 €</span> sobre el saldo que vas a canjear.
+          <i class="pi pi-info-circle" style="cursor:pointer;" onclick="event.stopPropagation(); toggleWithholdingTooltip()"></i>
+        </p>
+        <p class="withholding-info">Obtendrás una tarjeta de Amazon por valor de <span class="bold" id="modalNet">14,70 €.</span></p>
+        <div class="c-btn">
+          <button class="btn-add" id="confirmRedeemBtn" onclick="confirmRedemption()">Confirmar</button>
+          <button class="btn-cancel" onclick="closeRewardModal()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tooltip de información de retención fiscal -->
+    <div class="tooltip-backdrop" id="withholdingBackdrop" onclick="closeWithholdingTooltip()"></div>
+    <div class="withholding-tooltip-wrapper" id="withholdingTooltip">
+      <div class="withholding-content">
+        <h3>Información sobre la retención fiscal</h3>
+        <p>Conforme a la normativa vigente del IRPF, la retribución en forma de tarjetas de Amazon está sujeta a impuesto como retribución en especie, por lo que <span class="brand-name">Travelance</span> está obligada a practicar una retención del 2% sobre el importe canjeado. Esta retención se descuenta del saldo canjeado y se ingresa en la Agencia Tributaria.</p>
+        <h3>Condiciones</h3>
+        <ul>
+          <li>Las tarjetas Amazon tributan en el IRPF como retribución en especie, aplicándose una retención del 2% sobre su importe.</li>
+          <li>Se ingresa en la Agencia Tributaria conforme a la normativa vigente, apareciendo en el borrador de la declaración de la renta correspondiente.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Modal de error (saldo insuficiente) -->
+    <div class="modal" id="rewardErrorModal">
+      <div class="modal-content">
+        <h2>Todavía no puedes canjear esta recompensa</h2>
+        <p>Sigue acumulando puntos y muy pronto podrás disfrutarla.</p>
+        <div class="c-btn">
+          <button class="btn-cancel-red" onclick="closeErrorModal()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<!-- ============ /VISTA REWARDS ============ -->
+
+<!-- ================= VISTA RESERVAS ================= -->
+<div id="reservationsView" style="display:none;">
+  <main class="c-all reservations-main">
+    <div class="title-container">
+      <h1 class="title-club">Reservas</h1>
+      <i class="pi pi-info-circle icon-title" onclick="openTitleTooltip()"></i>
+    </div>
+
+    <div class="c-info-table">
+      <div class="txt-balance">
+        <p class="txt-balance"><span>Saldo disponible:</span> <span id="bookingsPointsDisplay">1.500</span></p>
+        <div class="info-travels">
+          <i class="pi pi-info-circle"></i>
+          <p>Los puntos Travels son válidos durante un año natural desde la fecha de salida.</p>
+        </div>
+      </div>
+
+      <div class="c-filters-add">
+        <div class="c-filters-table">
+          <div class="filter-container">
+            <label for="filterType">Tipo de producto:</label>
+            <select id="filterType" class="style-inputs" onchange="applyBookingFilters()">
+              <option value="all">Todos</option>
+              <option value="booking">Reservas</option>
+              <option value="milestone">Campañas</option>
+            </select>
+          </div>
+          <div class="vertical-divider"></div>
+          <div class="filter-container">
+            <label for="filterStatus">Estado de reserva:</label>
+            <select id="filterStatus" class="style-inputs" onchange="applyBookingFilters()">
+              <option value="">Todos</option>
+              <option value="Canjeado">Canjeado</option>
+              <option value="No aplicable">No aplicable</option>
+              <option value="No aplica">No aplica</option>
+              <option value="Pendiente de validación">Pendiente de validación</option>
+            </select>
+          </div>
+        </div>
+        <div class="filters-table">
+          <button class="btn-add" onclick="openBookingFormModal()">Añadir Reserva</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <div class="b-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Localizador</th>
+              <th>Proveedor</th>
+              <th>Producto</th>
+              <th>Alta de reserva</th>
+              <th>Salida</th>
+              <th>Estado de reserva</th>
+              <th>Importe validado</th>
+              <th>Travels</th>
+              <th>Caducidad Travels</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsTableBody">
+            <tr data-type="milestone" data-status="No aplicable">
+              <td>ASDFGHJK</td>
+              <td><img class="provider-logo-img" src="data:image/png;base64,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" alt="dimensiones CLUB"></td>
+              <td>--</td>
+              <td>--</td>
+              <td>02/06/2026</td>
+              <td><span class="neutral-tag">No aplicable</span></td>
+              <td>--</td>
+              <td>--</td>
+              <td class="expiry-ok">02/06/2027</td>
+            </tr>
+            <tr data-type="booking" data-status="No aplica">
+              <td>T-123</td>
+              <td><img class="provider-logo-img" src="data:image/png;base64,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" alt="Intermundial"></td>
+              <td>--</td>
+              <td>--</td>
+              <td>--</td>
+              <td><span class="neutral-tag">No aplica</span></td>
+              <td>--</td>
+              <td>--</td>
+              <td>--</td>
+            </tr>
+            <tr data-type="booking" data-status="Canjeado">
+              <td>H-12</td>
+              <td><span class="provider-logo-content"><span class="logo-fallback">SOLTOUR</span></span></td>
+              <td>TOUR</td>
+              <td>15/01/2026</td>
+              <td>16/01/2026</td>
+              <td><span class="validated-tag">Canjeado</span></td>
+              <td>2.000,00 €</td>
+              <td>500</td>
+              <td class="expiry-ok">16/01/2027</td>
+            </tr>
+            <tr data-type="booking" data-status="Canjeado">
+              <td>H-123</td>
+              <td><span class="provider-logo-content"><span class="logo-fallback">SOLTOUR</span></span></td>
+              <td>TOUR</td>
+              <td>15/01/2026</td>
+              <td>16/01/2026</td>
+              <td><span class="validated-tag">Canjeado</span></td>
+              <td>2.000,00 €</td>
+              <td>500</td>
+              <td class="expiry-ok">16/01/2027</td>
+            </tr>
+            <tr data-type="booking" data-status="Canjeado">
+              <td>S123</td>
+              <td><span class="provider-logo-content"><span class="logo-fallback">SOLTOUR</span></span></td>
+              <td>TOUR</td>
+              <td>15/01/2026</td>
+              <td>16/01/2026</td>
+              <td><span class="validated-tag">Canjeado</span></td>
+              <td>2.000,00 €</td>
+              <td>500</td>
+              <td class="expiry-ok">16/01/2027</td>
+            </tr>
+            <tr data-type="booking" data-status="No aplica">
+              <td>H-1234</td>
+              <td><img class="provider-logo-img" src="data:image/png;base64,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" alt="Intermundial"></td>
+              <td>--</td>
+              <td>--</td>
+              <td>--</td>
+              <td><span class="neutral-tag">No aplica</span></td>
+              <td>--</td>
+              <td>--</td>
+              <td>--</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal: Añadir Nueva Reserva -->
+    <div class="modal" id="bookingFormModal">
+      <div class="modal-content">
+        <h2>Añadir Nueva Reserva</h2>
+        <p>Solo se admitirán reservas realizadas con <span class="high-txt">fecha posterior al 1 de marzo de 2025</span></p>
+
+        <form id="bookingForm" novalidate onsubmit="return handleBookingSubmit(event)">
+          <div class="form-group">
+            <label for="bookingProvider">Selecciona el proveedor:</label>
+            <select id="bookingProvider" class="style-inputs" onchange="onProviderChange()">
+              <option value="">Selecciona un proveedor</option>
+              <option value="Soltour Rewards">Soltour Rewards</option>
+              <option value="Intermundial">Intermundial</option>
+              <option value="dimensiones CLUB">dimensiones CLUB</option>
+            </select>
+          </div>
+          <div class="form-group" id="policyFieldGroup" style="display:none;">
+            <div class="label-container-info">
+              <label for="bookingPolicy">Añade la póliza de tu reserva:</label>
+              <i class="pi pi-info-circle icon-policy" title="Es necesario introducir la póliza correctamente, de lo contrario, la reserva no podrá ser validada por el proveedor."></i>
+            </div>
+            <input class="style-inputs" type="text" id="bookingPolicy">
+          </div>
+          <div class="form-group">
+            <label for="bookingLocatorInput">Añade el localizador de tu reserva:</label>
+            <input class="style-inputs" type="text" id="bookingLocatorInput" placeholder="Escribe el localizador">
+          </div>
+          <div class="c-btn">
+            <button class="btn-add" type="submit">Añadir Reserva</button>
+            <button type="button" class="btn-cancel" onclick="closeBookingFormModal()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Tooltip: validez de las reservas -->
+  <div class="tooltip-backdrop" id="titleTooltipBackdrop" onclick="closeTitleTooltip()"></div>
+  <div class="title-tooltip-wrapper" id="titleTooltipWrapper">
+    <div class="tooltip-title-content">
+      <h3>Validez de las reservas</h3>
+      <ul>
+        <li>Solo se validarán <span class="high-txt">reservas hasta 2 meses después de su fecha de salida.</span></li>
+        <li>Las <span class="high-txt">reservas de grupos</span> no aplican al programa <span class="brand-name">Travelance</span> Rewards.</li>
+        <li>Las reservas de Intermundial solo se contabilizan para producto perteneciente a <span class="high-txt">Pack Plus.</span></li>
+      </ul>
+      <h3>Verificación de puntos travels</h3>
+      <ul>
+        <li>Los puntos se asignarán <span class="high-txt">una vez efectuada la salida del viaje.</span></li>
+        <li>Solo se reflejarán las reservas disfrutadas por el cliente.</li>
+      </ul>
+      <p><span class="high-txt"><span class="brand-name">Travelance</span> no valida directamente las reservas,</span> sino que cada proveedor se encarga de confirmarlas. Si tienes cualquier incidencia con la validación, solo tendrás que contactar con el proveedor correspondiente y te ayudará a resolverlo.</p>
+      <p>Consulta las condiciones completas <a href="#" target="_blank">aquí</a></p>
+      <p><span class="high-txt">¿Necesitas ayuda?</span> Escríbenos a <span class="high-txt">consultas@travelance.club</span></p>
+    </div>
+  </div>
+</div>
+<!-- ============ /VISTA RESERVAS ============ -->
+
+<!-- ================= VISTA CONSULTAS (FAQ) ================= -->
+<div id="consultasView" style="display:none;">
+  <section class="faq-hero">
+    <div class="faq-hero__inner body-generic">
+      <h1 class="faq-hero__title">Preguntas frecuentes</h1>
+      <p class="faq-hero__subtitle">Resolvemos tus dudas sobre <span class="brand-name">Travelance</span> Rewards para que puedas aprovechar al máximo el programa.</p>
+    </div>
+  </section>
+
+  <main class="faq-main body-generic">
+    <div class="faq-grid">
+
+      <div class="faq-card">
+        <div class="faq-card__header">
+          <span class="faq-card__icon-wrapper"><i class="pi pi-book faq-card__icon"></i></span>
+          <div>
+            <span class="faq-card__label">CATEGORÍA</span>
+            <h2 class="faq-card__title">INTRODUCCIÓN Y ACCESO</h2>
+          </div>
+        </div>
+        <p class="faq-card__description">Todo lo que necesitas saber para empezar a utilizar <span class="brand-name">Travelance</span> Rewards y sacar el máximo partido a tus ventas.</p>
+        <ul class="faq-list">
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Qué es <span class="brand-name">Travelance</span> Rewards?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p><span class="brand-name">Travelance</span> Rewards es el programa de incentivos dirigido a agentes de viajes que te permite acumular puntos ("Travels") por tus ventas y canjearlos por tarjetas regalo de Amazon.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Quién puede participar en <span class="brand-name">Travelance</span> Rewards?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Cualquier agente de viajes que trabaje en una agencia española puede participar en el programa.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Cómo me registro en el programa?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Solo tienes que registrarte con tus datos personales en la plataforma de <span class="brand-name">Travelance</span> Rewards o iniciar sesión si ya tienes cuenta.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Dónde accedo a mis reservas?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Dentro de la plataforma, en la sección "Reservas", podrás registrar y consultar tu actividad.</p></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="faq-card">
+        <div class="faq-card__header">
+          <span class="faq-card__icon-wrapper"><i class="pi pi-pencil faq-card__icon"></i></span>
+          <div>
+            <span class="faq-card__label">CATEGORÍA</span>
+            <h2 class="faq-card__title">REGISTRO DE VENTAS</h2>
+          </div>
+        </div>
+        <p class="faq-card__description">Aprende cómo registrar correctamente tus reservas para empezar a acumular Travels.</p>
+        <ul class="faq-list">
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Cómo registro una venta?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Accede a la sección "Reservas", selecciona el partner e introduce el localizador de la reserva. Es importante revisar que el localizador sea correcto, ya que, si se introduce de forma errónea, los puntos Travels no podrán asignarse correctamente.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Qué tipo de reservas generan puntos Travels?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Todas las ventas realizadas con los partners adheridos a <span class="brand-name">Travelance</span> Rewards generan puntos, excepto las reservas de grupos. En el caso de Intermundial, solo se contabilizan las ventas correspondientes al producto Pack Plus. Puedes consultar los partners disponibles en la página principal del programa.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Cuántos Travels gano por cada reserva?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Por cada 100€ de reserva se generan 25 Travels. Cada 100 Travels equivalen a 1€, que podrás canjear por tarjetas regalo de Amazon. Además, en las reservas realizadas con Checkin Hotels, DWO Hotels, Bakour Hotels &amp; Resorts y Smy Hotels a través de la página de Soltour, obtendrás el doble de Travels: por cada 100€ de reserva, el agente ganará 50 Travels.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Hay un plazo para registrar una reserva?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Sí. Puedes registrar una reserva desde el momento en que la realizas hasta un máximo de 2 meses después de la fecha de inicio del viaje.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Puedo registrar reservas de grupo?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>No, las reservas de grupo solo están permitidas para el producto de Intermundial.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Qué pasa si me equivoco al registrar una reserva?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>No pasa nada. No es posible editar una reserva ya introducida, pero puedes volver a registrarla correctamente. Solo se validará la que sea correcta.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Qué ocurre si duplico una reserva?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Si duplicas una reserva, se identificará durante la validación y solo se contabilizará una de ellas.</p></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="faq-card">
+        <div class="faq-card__header">
+          <span class="faq-card__icon-wrapper"><i class="pi pi-check-circle faq-card__icon"></i></span>
+          <div>
+            <span class="faq-card__label">CATEGORÍA</span>
+            <h2 class="faq-card__title">VALIDACIÓN Y ESTADO DE RESERVAS</h2>
+          </div>
+        </div>
+        <p class="faq-card__description">Consulta cómo se validan tus reservas y cuándo se reflejan tus puntos.</p>
+        <ul class="faq-list">
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Cómo puedo ver el estado de mis reservas?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>En la sección "Reservas" podrás ver el estado de cada una: Pendiente, Validada o Rechazada.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Cuánto tarda en validarse una reserva?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>El proceso en ocasiones puede tardar varias semanas desde la fecha de emisión o salida del viaje.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Quién valida las reservas?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Cada proveedor es responsable de validar sus propias reservas. <span class="brand-name">Travelance</span> no gestiona directamente estos datos.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Cuándo se asignan los puntos Travels?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Los puntos se asignan una vez efectuada la salida del viaje y tras la validación por parte del partner.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Por qué no veo mis puntos reflejados todavía?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Porque las reservas deben cumplir dos condiciones: que el viaje ya haya sido disfrutado y que el partner haya validado la reserva. Hasta entonces, aparecerán como pendientes.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Por qué pueden rechazar una reserva?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Algunos de los motivos más habituales son: registro fuera de plazo (más de 2 meses desde la salida), reserva cancelada, datos incorrectos o mal introducidos, o producto no válido dentro del programa.</p></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="faq-card">
+        <div class="faq-card__header">
+          <span class="faq-card__icon-wrapper"><i class="pi pi-gift faq-card__icon"></i></span>
+          <div>
+            <span class="faq-card__label">CATEGORÍA</span>
+            <h2 class="faq-card__title">CANJE DE PUNTOS</h2>
+          </div>
+        </div>
+        <p class="faq-card__description">Convierte tus Travels en recompensas de forma sencilla.</p>
+        <ul class="faq-list">
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Cuántos puntos necesito para canjear una recompensa?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Necesitas un mínimo de 1.000 Travels para solicitar un canje.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Cómo canjeo mis puntos?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Accede a la sección "Rewards", donde podrás consultar tus Travels acumulados y solicitar tu tarjeta regalo. La recibirás directamente en el correo electrónico asociado a tu cuenta de <span class="brand-name">Travelance</span> Rewards.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Puedo canjear todo mi saldo de una vez?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Sí. Puedes canjear la totalidad de los Travels disponibles en tu cuenta en un único canje. No es posible dividir el saldo en diferentes tarjetas.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Cuánto tarda en llegar la tarjeta Amazon?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Una vez solicitada, recibirás tu tarjeta regalo en un plazo máximo de 7 días por email.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Dónde puedo utilizar mi tarjeta regalo de Amazon?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Puedes utilizarla en la web o app de Amazon para comprar cualquier producto disponible en su catálogo.</p></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="faq-card">
+        <div class="faq-card__header">
+          <span class="faq-card__icon-wrapper"><i class="pi pi-calendar faq-card__icon"></i></span>
+          <div>
+            <span class="faq-card__label">CATEGORÍA</span>
+            <h2 class="faq-card__title">CADUCIDAD Y CONDICIONES</h2>
+          </div>
+        </div>
+        <p class="faq-card__description">Información importante sobre la validez de tus puntos y condiciones del programa.</p>
+        <ul class="faq-list">
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Caducan los puntos Travels?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Sí. Dispones de 365 días desde la fecha de salida del viaje. Pasado ese plazo, caducarán automáticamente.</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Las tarjetas regalo tienen implicaciones fiscales?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Sí. Las tarjetas Amazon tributan en el IRPF como retribución en especie. Se aplica una retención del 2%, que se descuenta del importe canjeado conforme a la normativa vigente. ¡No te tienes que preocupar de nada!</p></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="faq-card">
+        <div class="faq-card__header">
+          <span class="faq-card__icon-wrapper"><i class="pi pi-users faq-card__icon"></i></span>
+          <div>
+            <span class="faq-card__label">CATEGORÍA</span>
+            <h2 class="faq-card__title">COMPATIBILIDAD CON <span class="brand-name">TRAVELANCE</span> CLUB</h2>
+          </div>
+        </div>
+        <p class="faq-card__description">Descubre cómo se combinan ambos programas.</p>
+        <ul class="faq-list">
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Es compatible <span class="brand-name">Travelance</span> Rewards con <span class="brand-name">Travelance</span> Club?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Sí, ambos programas son totalmente compatibles. <span class="brand-name">Travelance</span> Club premia a la agencia, mientras que <span class="brand-name">Travelance</span> Rewards premia al agente. De esta forma, una misma venta puede generar beneficios para la agencia (bonos) y para el agente (Travels).</p></div>
+          </li>
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Hay alguna diferencia entre ambos programas?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Sí: <span class="brand-name">Travelance</span> Club está dirigido a agencias independientes, mientras que <span class="brand-name">Travelance</span> Rewards está abierto a cualquier agente de viajes en España.</p></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="faq-card">
+        <div class="faq-card__header">
+          <span class="faq-card__icon-wrapper"><i class="pi pi-user faq-card__icon"></i></span>
+          <div>
+            <span class="faq-card__label">CATEGORÍA</span>
+            <h2 class="faq-card__title">CUENTA Y PERFIL</h2>
+          </div>
+        </div>
+        <p class="faq-card__description">Gestiona tu cuenta y tu información personal dentro del programa.</p>
+        <ul class="faq-list">
+          <li class="faq-item">
+            <button class="faq-item__question" type="button" onclick="toggleFaq(this)">
+              <span>¿Qué ocurre con mis Travels si cambio de agencia?</span>
+              <i class="pi pi-chevron-down faq-item__chevron"></i>
+            </button>
+            <div class="faq-item__answer"><p>Nada. Los Travels están asociados al agente, no a la agencia. Puedes actualizar tu nueva agencia en tu perfil y seguir acumulando y canjeando puntos con normalidad.</p></div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <section class="faq-contact">
+      <div class="faq-contact__text">
+        <h3 class="faq-contact__title">¿No has encontrado tu respuesta?</h3>
+        <p class="faq-contact__desc">Si tu consulta no ha quedado resuelta, puedes ponerte en contacto con nosotros a través del siguiente formulario. Nuestro equipo te responderá a la mayor brevedad posible para ofrecerte la solución que necesitas.</p>
+      </div>
+      <form class="faq-contact__form" onsubmit="event.preventDefault(); this.reset(); fakeToast('Formulario enviado correctamente (mock)')">
+        <input type="text" class="input-contact" placeholder="Nombre y apellidos *">
+        <input type="email" class="input-contact" placeholder="Correo electrónico *">
+        <input type="tel" class="input-contact" placeholder="Teléfono">
+        <textarea rows="6" class="input-contact input-textarea" placeholder="Comentario *"></textarea>
+        <div class="faq-contact__check">
+          <h3 class="terms">Términos y condiciones</h3>
+          <div class="terms-container">
+            <input type="checkbox" id="faqAcceptPolicies">
+            <label for="faqAcceptPolicies">He leído y acepto la <a class="link-color" href="#">Política de Privacidad</a></label>
+          </div>
+        </div>
+        <div class="faq-contact__submit">
+          <button type="submit" class="btn-send">Enviar</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>
+<!-- ============ /VISTA CONSULTAS ============ -->
+
+<!-- ================= VISTA PERFIL DE USUARIO ================= -->
+<div id="profileView" style="display:none;">
+  <div class="c-profile">
+    <div class="profile-header">
+      <div class="avatar-wrap">
+        <div class="avatar-ring" id="avatarRing" style="--pct:100;">
+          <div class="avatar-inner"><i class="pi pi-user"></i></div>
+        </div>
+      </div>
+      <div class="header-text">
+        <h1>Perfil del usuario</h1>
+        <div class="header-meta">
+          Completa tus datos para disfrutar de todas las ventajas de <span class="brand-name">Travelance</span> Rewards —
+          <strong id="completionText">100%</strong> completado
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-layout">
+      <nav class="side-nav">
+        <a href="#sec-personal" onclick="scrollToProfileSection(event, 'sec-personal')"><i class="pi pi-id-card"></i> Información personal</a>
+        <a href="#sec-contacto" onclick="scrollToProfileSection(event, 'sec-contacto')"><i class="pi pi-phone"></i> Información de contacto</a>
+        <a href="#sec-adicional" onclick="scrollToProfileSection(event, 'sec-adicional')"><i class="pi pi-briefcase"></i> Datos adicionales</a>
+        <div class="side-progress">
+          <div class="side-progress-label"><span>Progreso</span><b id="sideProgressText">100%</b></div>
+          <div class="side-progress-bar"><div class="side-progress-fill" id="sideProgressFill" style="width:100%;"></div></div>
+        </div>
+      </nav>
+
+      <form class="main-content" id="profileForm" novalidate onsubmit="return handleProfileSubmit(event)">
+        <section class="card" id="sec-personal">
+          <div class="profile-card-header">
+            <div class="card-icon"><i class="pi pi-id-card"></i></div>
+            <div><h2>Información personal</h2><p>Tus datos básicos de identificación</p></div>
+          </div>
+
+          <div class="g-inputs">
+            <div class="ma-field full-width"><label>Nombre</label><input type="text" class="profile-required" value="Elena" oninput="updateProfileCompletion()"></div>
+            <div class="ma-field full-width"><label>Primer Apellido</label><input type="text" class="profile-required" value="Rivilla" oninput="updateProfileCompletion()"></div>
+            <div class="ma-field full-width"><label>Segundo Apellido</label><input type="text" value=""></div>
+          </div>
+
+          <div class="g-inputs">
+            <div class="ma-field full-width"><label>País</label><input type="text" class="profile-required" value="España" oninput="updateProfileCompletion()"></div>
+            <div class="ma-field full-width"><label>Provincia de residencia</label><input type="text" class="profile-required" value="Islas Baleares" oninput="updateProfileCompletion()"></div>
+            <div class="ma-field full-width"><label>Ciudad</label><input type="text" value=""></div>
+          </div>
+
+          <div class="g-inputs half-width">
+            <div class="ma-field full-width"><label>Código Postal</label><input type="text" value=""></div>
+          </div>
+
+          <div class="g-inputs">
+            <div class="ma-field full-width"><label>DNI/NIF</label><input type="text" class="profile-required" value="98745612Z" oninput="updateProfileCompletion()"></div>
+            <div class="ma-field full-width"><label>Fecha de Nacimiento</label><input type="date" class="profile-required" value="1991-03-01" oninput="updateProfileCompletion()"></div>
+          </div>
+
+          <div class="c-gender">
+            <label class="gender-label">Género</label>
+            <div class="pill-group" role="radiogroup">
+              <input type="radio" id="gender-h" name="gender" value="H">
+              <label for="gender-h">Masculino</label>
+              <input type="radio" id="gender-m" name="gender" value="M" checked>
+              <label for="gender-m">Femenino</label>
+              <input type="radio" id="gender-otro" name="gender" value="otro">
+              <label for="gender-otro">Otro</label>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="sec-contacto">
+          <div class="profile-card-header">
+            <div class="card-icon"><i class="pi pi-phone"></i></div>
+            <div><h2>Información de contacto</h2><p>Cómo nos ponemos en contacto contigo</p></div>
+          </div>
+          <div class="g-inputs">
+            <div class="ma-field full-width"><label>Correo electrónico</label><input type="email" class="profile-required" value="elena.rivilla@soltour.com" readonly oninput="updateProfileCompletion()"></div>
+            <div class="ma-field full-width"><label>Teléfono Móvil</label><input type="tel" class="profile-required" value="123123456" oninput="updateProfileCompletion()"></div>
+          </div>
+        </section>
+
+        <section class="card" id="sec-adicional">
+          <div class="profile-card-header">
+            <div class="card-icon"><i class="pi pi-briefcase"></i></div>
+            <div><h2>Datos adicionales</h2><p>Vinculación con tu punto de venta</p></div>
+          </div>
+          <div class="g-inputs">
+            <div class="ma-field w-agency"><label>Agencia</label><input type="text" class="profile-required" value="AGENCIAS PENDIENTES DE DEFINIR" oninput="updateProfileCompletion()"></div>
+          </div>
+        </section>
+
+        <div class="form-actions">
+          <span class="msg" id="profileMsg"><i class="pi pi-exclamation-triangle"></i> Rellena los campos obligatorios para guardar</span>
+          <button type="submit" class="btn-add" id="profileSaveBtn"><p>Guardar datos</p></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ============ /VISTA PERFIL DE USUARIO ============ -->
+
+<footer class="c-footer">
+  <div class="c-footer-items">
+    <div class="logo-travelance">
+      <span id="footerLogoContent"><span class="footer-logo-fallback">TRAVELANCE</span></span>
+    </div>
+    <div class="web-map-travelance">
+      <!-- Estado invitado -->
+      <ul class="c-header__nav-primary-list container" id="footerNavGuest">
+        <li class="c-header__nav-primary-item"><a class="link-web-map" href="#" title="faqs" onclick="showView('consultas'); return false;">Consultas</a></li>
+      </ul>
+      <!-- Estado logueado -->
+      <ul class="c-header__nav-primary-list container" id="footerNavLogged" style="display:none;">
+        <li class="c-header__nav-primary-item"><a class="link-web-map" href="#" title="inicio" onclick="showView('home'); return false;">Inicio</a></li>
+        <li class="c-header__nav-primary-item"><a class="link-web-map" href="#" title="recompensas" onclick="showView('rewards'); return false;">Rewards</a></li>
+        <li class="c-header__nav-primary-item"><a class="link-web-map" href="#" title="reservas" onclick="showView('reservations'); return false;">Reservas</a></li>
+        <li class="c-header__nav-primary-item"><a class="link-web-map" href="#" title="perfil" onclick="showView('profile'); return false;">Perfil del Usuario</a></li>
+        <li class="c-header__nav-primary-item"><a class="link-web-map" href="#" title="faqs" onclick="showView('consultas'); return false;">Consultas</a></li>
+      </ul>
+    </div>
+    <div class="legal-pages">
+      <div class="legal">
+        <ul>
+          <li><a href="https://www.travelance.club/aviso-legal" target="_blank" class="c-link">Aviso legal</a></li>
+          <li><a href="https://www.travelance.club/politica-privacidad-travelance-rewards" target="_blank" class="c-link">Política de Privacidad</a></li>
+          <li><a href="https://www.travelance.club/politica-de-cookies-2" target="_blank" class="c-link">Política de Cookies</a></li>
+        </ul>
+      </div>
+      <div class="rrss-travelance">
+        <a href="https://www.youtube.com/channel/UC5AqGokoTyBat38ghNNaUpw" target="_blank">
+          <div class="link-rrss">
+            <svg class="yt-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M549.7 124.1c-6.3-23.7-24.8-42.3-48.3-48.6C458.8 64 288 64 288 64S117.2 64 74.6 75.5c-23.5 6.3-42 24.9-48.3 48.6-11.4 42.9-11.4 132.3-11.4 132.3s0 89.4 11.4 132.3c6.3 23.7 24.8 41.5 48.3 47.8C117.2 448 288 448 288 448s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zm-317.5 213.5V175.2l142.7 81.2-142.7 81.2z"/></svg>
+          </div>
+        </a>
+        <a href="https://www.linkedin.com/company/travelance-partners" target="_blank">
+          <div class="link-rrss">
+            <svg class="linkedin-travelance" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M100.3 448H7.4V148.9h92.9zM53.8 108.1C24.1 108.1 0 83.5 0 53.8a53.8 53.8 0 0 1 107.6 0c0 29.7-24.1 54.3-53.8 54.3zM447.9 448h-92.7V302.4c0-34.7-.7-79.2-48.3-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.8V148.9h89.1v40.8h1.3c12.4-23.5 42.7-48.3 87.9-48.3 94 0 111.3 61.9 111.3 142.3V448z"/></svg>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="copyright">
+      <p id="copyrightGuest">© <span id="footerYear"></span> <span class="brand-name">Travelance</span> Rewards</p>
+      <p id="copyrightLogged" style="display:none;">© <span id="footerYearLogged"></span> <span class="brand-name">Travelance</span> Travel Partners</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= TOAST FALSO ================= -->
+<div class="fake-toast" id="fakeToast"></div>
+
+<!-- ================= PANEL DE EDICIÓN ================= -->
+<div class="mock-toolbar" id="mockToolbar">
+  <button class="mock-toggle-btn" id="toggleBtn" onclick="requestEditAccess()" title="Personalizar (Ctrl+Shift+P)">✏️</button>
+</div>
+
+<!-- ================= CONTROL DE ACCESO A LA EDICIÓN ================= -->
+<div class="modal" id="passwordModal">
+  <div class="modal-content" style="max-width:380px;">
+    <!-- Primera vez: crear contraseña -->
+    <div id="passwordSetupView">
+      <h2>Protege la edición</h2>
+      <p>Nadie ha puesto todavía una contraseña para editar esta página. Crea una — la necesitarás (y cualquiera que quiera editar) a partir de ahora.</p>
+      <div style="margin-top:1rem; text-align:left;">
+        <div class="ma-field">
+          <label>Nueva contraseña</label>
+          <input type="password" id="newPasswordInput" autocomplete="new-password" onkeydown="if(event.key==='Enter'){handlePasswordSetup(event);}">
+        </div>
+        <div class="ma-field">
+          <label>Repite la contraseña</label>
+          <input type="password" id="newPasswordConfirmInput" autocomplete="new-password" onkeydown="if(event.key==='Enter'){handlePasswordSetup(event);}">
+        </div>
+        <div class="c-btn">
+          <button type="button" class="btn-add" onclick="handlePasswordSetup(event)">Crear y entrar</button>
+          <button type="button" class="btn-cancel" onclick="closePasswordModal()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+    <!-- Ya hay contraseña: pedirla -->
+    <div id="passwordVerifyView" style="display:none;">
+      <h2>Acceso protegido</h2>
+      <p>Introduce la contraseña para poder editar la personalización de esta página.</p>
+      <div style="margin-top:1rem; text-align:left;">
+        <div class="ma-field">
+          <label>Contraseña</label>
+          <input type="password" id="verifyPasswordInput" autocomplete="current-password" onkeydown="if(event.key==='Enter'){handlePasswordVerify(event);}">
+        </div>
+        <p class="error-text" id="passwordError" style="display:none;">Contraseña incorrecta. Inténtalo de nuevo.</p>
+        <div class="c-btn">
+          <button type="button" class="btn-add" onclick="handlePasswordVerify(event)">Entrar</button>
+          <button type="button" class="btn-cancel" onclick="closePasswordModal()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="edit-panel" id="editPanel">
+  <h3>Personalización del partner</h3>
+  <p style="font-size:0.7rem;color:#999;margin:-10px 0 4px 0;line-height:1.4;">Los cambios se guardan automáticamente y los verá cualquiera que abra este enlace.</p>
+  <p style="margin:0 0 16px 0;"><a href="#" onclick="event.preventDefault(); startPasswordChange();" style="font-size:0.72rem;color:var(--color-primary-club);">Cambiar contraseña de edición</a></p>
+  <button class="edit-panel-close" onclick="togglePanel()" title="Cerrar">✕</button>
+  <div class="edit-field">
+    <label>Nombre del partner</label>
+    <input type="text" id="partnerNameInput" placeholder="Ej. Viajes Ejemplo" oninput="updatePartnerName(this.value)">
+  </div>
+  <div class="edit-field">
+    <label>Color primario</label>
+    <div class="color-field-row">
+      <input type="color" id="primaryColorInput" value="#0F6E6A" oninput="syncColorFromPicker('primary', this.value)">
+      <input type="text" id="primaryColorHex" class="hex-input" value="#0F6E6A" maxlength="7" oninput="syncColorFromHex('primary', this.value)">
+    </div>
+  </div>
+  <div class="edit-field">
+    <label>Color secundario (hover)</label>
+    <div class="color-field-row">
+      <input type="color" id="secondaryColorInput" value="#0B5652" oninput="syncColorFromPicker('secondary', this.value)">
+      <input type="text" id="secondaryColorHex" class="hex-input" value="#0B5652" maxlength="7" oninput="syncColorFromHex('secondary', this.value)">
+    </div>
+  </div>
+  <div class="edit-field">
+    <label>Color de fondo del footer</label>
+    <div class="color-field-row">
+      <input type="color" id="footerColorInput" value="#123832" oninput="syncColorFromPicker('footer', this.value)">
+      <input type="text" id="footerColorHex" class="hex-input" value="#123832" maxlength="7" oninput="syncColorFromHex('footer', this.value)">
+    </div>
+    <div class="hint">Independiente del color primario</div>
+  </div>
+  <div class="edit-field">
+    <label>Logo header (URL o código SVG)</label>
+    <input type="text" id="logoUrlInput" placeholder="https://... o pega el código <svg>" oninput="updateLogo(this.value)">
+    <div class="hint">Admite URL de imagen (png, jpg, svg, webp) o pegar el código SVG completo</div>
+    <div class="upload-divider">o</div>
+    <label class="upload-btn" for="logoFileInput">📁 Subir archivo de logo</label>
+    <input type="file" id="logoFileInput" accept="image/*,.svg" style="display:none" onchange="handleLogoFile(this.files[0])">
+    <div class="hint" id="logoFileName"></div>
+  </div>
+  <div class="edit-field">
+    <label>Logo footer (versión negativo/blanco)</label>
+    <input type="text" id="footerLogoUrlInput" placeholder="https://... o pega el código <svg>" oninput="updateFooterLogo(this.value)">
+    <div class="hint">Suele ser una versión distinta del logo (blanca/negativa) — campo independiente del logo del header</div>
+    <div class="upload-divider">o</div>
+    <label class="upload-btn" for="footerLogoFileInput">📁 Subir archivo de logo footer</label>
+    <input type="file" id="footerLogoFileInput" accept="image/*,.svg" style="display:none" onchange="handleFooterLogoFile(this.files[0])">
+    <div class="hint" id="footerLogoFileName"></div>
+  </div>
+  <div class="edit-field">
+    <label>Banner promocional</label>
+    <input type="text" id="bannerUrlInput" placeholder="https://..." oninput="updateBanner(this.value)">
+    <div class="hint">Se aplica al primer slide del carrusel</div>
+    <div class="upload-divider">o</div>
+    <label class="upload-btn" for="bannerFileInput">📁 Subir archivo de banner</label>
+    <input type="file" id="bannerFileInput" accept="image/*" style="display:none" onchange="handleBannerFile(this.files[0])">
+    <div class="hint" id="bannerFileName"></div>
+  </div>
+  <div class="edit-field">
+    <label>Fondo de la pantalla de login</label>
+    <input type="text" id="loginBgUrlInput" placeholder="https://..." oninput="updateLoginBg(this.value)">
+    <div class="hint">Imagen a pantalla completa detrás del recuadro de login</div>
+    <div class="upload-divider">o</div>
+    <label class="upload-btn" for="loginBgFileInput">📁 Subir archivo de fondo</label>
+    <input type="file" id="loginBgFileInput" accept="image/*" style="display:none" onchange="handleLoginBgFile(this.files[0])">
+    <div class="hint" id="loginBgFileName"></div>
+  </div>
+  <button class="edit-reset" onclick="resetDefaults()">Restablecer valores</button>
+</div>
+
+<script>
+  // --- Banner slider ---
+  const banners = document.querySelectorAll('.banner');
+  const indicators = document.querySelectorAll('.indicator');
+  let currentBanner = 0;
+
+  function showBanner(i) {
+    banners.forEach((b, idx) => b.classList.toggle('active', idx === i));
+    indicators.forEach((ind, idx) => ind.classList.toggle('selected', idx === i));
+    currentBanner = i;
+  }
+  function nextBanner() { showBanner((currentBanner + 1) % banners.length); }
+  function prevBanner() { showBanner((currentBanner - 1 + banners.length) % banners.length); }
+  function selectBanner(i) { showBanner(i); }
+
+  // --- Toast falso ---
+  let toastTimer;
+  function fakeToast(msg) {
+    const toast = document.getElementById('fakeToast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  // --- Panel edición ---
+  // --- Control de acceso a la edición (contraseña hasheada, guardada en shared storage) ---
+  let editingUnlocked = false;
+  let changingPassword = false;
+
+  async function hashText(text) {
+    try {
+      if (window.crypto && window.crypto.subtle) {
+        const enc = new TextEncoder().encode(text);
+        const buf = await crypto.subtle.digest('SHA-256', enc);
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+      }
+    } catch (e) {}
+    // Fallback simple si crypto.subtle no está disponible (p.ej. abriendo el archivo local sin https)
+    let h = 0;
+    for (let i = 0; i < text.length; i++) { h = (h << 5) - h + text.charCodeAt(i); h |= 0; }
+    return 'fb-' + Math.abs(h).toString(16);
+  }
+
+  async function requestEditAccess() {
+    if (document.getElementById('editPanel').classList.contains('open')) {
+      togglePanel();
+      return;
+    }
+    if (editingUnlocked) {
+      togglePanel();
+      return;
+    }
+    await openPasswordFlow();
+  }
+
+  // --- Almacenamiento remoto (npoint.io) — funciona en cualquier hosting, sin cuenta de Claude ---
+  const NPOINT_URL = 'https://api.npoint.io/35e2929e449dcb90646c';
+  let binData = { config: {}, passwordHash: null };
+  let binLoaded = false;
+
+  async function loadBinData() {
+    try {
+      const res = await fetch(NPOINT_URL);
+      if (!res.ok) throw new Error('fetch failed');
+      const data = await res.json();
+      binData = { config: data.config || {}, passwordHash: data.passwordHash || null };
+    } catch (e) {
+      binData = { config: {}, passwordHash: null };
+    }
+    binLoaded = true;
+    return binData;
+  }
+  async function saveBinData() {
+    try {
+      const res = await fetch(NPOINT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(binData)
+      });
+      return res.ok;
+    } catch (e) {
+      return false;
+    }
+  }
+  async function ensureBinLoaded() {
+    if (!binLoaded) await loadBinData();
+    return binData;
+  }
+
+  async function openPasswordFlow() {
+    await ensureBinLoaded();
+    const existingHash = binData.passwordHash;
+
+    document.getElementById('passwordError').style.display = 'none';
+    document.getElementById('newPasswordInput').value = '';
+    document.getElementById('newPasswordConfirmInput').value = '';
+    document.getElementById('verifyPasswordInput').value = '';
+
+    if (existingHash) {
+      document.getElementById('passwordSetupView').style.display = 'none';
+      document.getElementById('passwordVerifyView').style.display = '';
+    } else {
+      document.getElementById('passwordSetupView').style.display = '';
+      document.getElementById('passwordVerifyView').style.display = 'none';
+    }
+    document.getElementById('passwordModal').classList.add('show');
+  }
+
+  function closePasswordModal() {
+    document.getElementById('passwordModal').classList.remove('show');
+    changingPassword = false;
+  }
+
+  async function handlePasswordSetup(event) {
+    event.preventDefault();
+    const pass = document.getElementById('newPasswordInput').value;
+    const confirm = document.getElementById('newPasswordConfirmInput').value;
+    if (!pass || pass.length < 4) {
+      fakeToast('La contraseña debe tener al menos 4 caracteres');
+      return false;
+    }
+    if (pass !== confirm) {
+      fakeToast('Las contraseñas no coinciden');
+      return false;
+    }
+    const hash = await hashText(pass);
+    binData.passwordHash = hash;
+    const ok = await saveBinData();
+    if (!ok) {
+      fakeToast('No se pudo guardar la contraseña (revisa la conexión con npoint)');
+      return false;
+    }
+    editingUnlocked = true;
+    closePasswordModal();
+    const wasChanging = changingPassword;
+    changingPassword = false;
+    fakeToast(wasChanging ? 'Contraseña actualizada' : 'Contraseña creada — edición desbloqueada');
+    if (!document.getElementById('editPanel').classList.contains('open')) togglePanel();
+    return false;
+  }
+
+  async function handlePasswordVerify(event) {
+    event.preventDefault();
+    const pass = document.getElementById('verifyPasswordInput').value;
+    const hash = await hashText(pass);
+    await ensureBinLoaded();
+    const storedHash = binData.passwordHash;
+
+    if (storedHash && hash === storedHash) {
+      editingUnlocked = true;
+      closePasswordModal();
+      if (changingPassword) {
+        changingPassword = false;
+        document.getElementById('passwordSetupView').style.display = '';
+        document.getElementById('passwordVerifyView').style.display = 'none';
+        document.getElementById('passwordModal').classList.add('show');
+      } else if (!document.getElementById('editPanel').classList.contains('open')) {
+        togglePanel();
+      }
+    } else {
+      document.getElementById('passwordError').style.display = 'block';
+      document.getElementById('verifyPasswordInput').value = '';
+    }
+    return false;
+  }
+
+  async function startPasswordChange() {
+    changingPassword = true;
+    await ensureBinLoaded();
+    const existingHash = binData.passwordHash;
+    document.getElementById('passwordError').style.display = 'none';
+    document.getElementById('verifyPasswordInput').value = '';
+    if (existingHash) {
+      // pide la contraseña actual antes de permitir cambiarla
+      document.getElementById('passwordSetupView').style.display = 'none';
+      document.getElementById('passwordVerifyView').style.display = '';
+    } else {
+      document.getElementById('passwordSetupView').style.display = '';
+      document.getElementById('passwordVerifyView').style.display = 'none';
+    }
+    document.getElementById('passwordModal').classList.add('show');
+  }
+
+  function togglePanel() {
+    const panel = document.getElementById('editPanel');
+    const open = panel.classList.toggle('open');
+    document.body.classList.toggle('panel-open', open);
+    if (open) {
+      document.getElementById('mockToolbar').classList.add('toolbar-hidden');
+    }
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') {
+      e.preventDefault();
+      document.getElementById('mockToolbar').classList.toggle('toolbar-hidden');
+    }
+    if (e.key === 'Escape') {
+      const panel = document.getElementById('editPanel');
+      if (panel.classList.contains('open')) togglePanel();
+    }
+  });
+  const colorVarMap = {
+    primary: ['--color-primary-club'],
+    secondary: ['--color-secondary-club'],
+    footer: ['--color-footer-bg']
+  };
+  const HEX_RE = /^#([0-9A-Fa-f]{6})$/;
+
+  function syncColorFromPicker(key, value) {
+    document.getElementById(key + 'ColorHex').value = value;
+    document.getElementById(key + 'ColorHex').classList.remove('invalid');
+    updateColor(colorVarMap[key], value);
+  }
+  function syncColorFromHex(key, value) {
+    const hexField = document.getElementById(key + 'ColorHex');
+    let v = value.trim();
+    if (v && !v.startsWith('#')) v = '#' + v;
+    if (HEX_RE.test(v)) {
+      hexField.classList.remove('invalid');
+      document.getElementById(key + 'ColorInput').value = v;
+      updateColor(colorVarMap[key], v);
+    } else {
+      hexField.classList.add('invalid');
+    }
+  }
+  function updateColor(varNames, value) {
+    const names = Array.isArray(varNames) ? varNames : [varNames];
+    names.forEach(n => document.documentElement.style.setProperty(n, value));
+    scheduleSave();
+  }
+  let currentBrandName = 'Travelance';
+  let currentLogoValue = '';
+  let currentFooterLogoValue = '';
+  let currentBannerValue = '';
+  let currentLoginBgValue = '';
+
+  function handleLogoFile(file) {
+    if (!file) return;
+    const nameLabel = document.getElementById('logoFileName');
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      document.getElementById('logoUrlInput').value = '';
+      updateLogo(e.target.result);
+      nameLabel.textContent = `✓ ${file.name}`;
+    };
+    reader.onerror = () => { nameLabel.textContent = '⚠ No se pudo leer el archivo'; };
+    reader.readAsDataURL(file);
+  }
+  function handleFooterLogoFile(file) {
+    if (!file) return;
+    const nameLabel = document.getElementById('footerLogoFileName');
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      document.getElementById('footerLogoUrlInput').value = '';
+      updateFooterLogo(e.target.result);
+      nameLabel.textContent = `✓ ${file.name}`;
+    };
+    reader.onerror = () => { nameLabel.textContent = '⚠ No se pudo leer el archivo'; };
+    reader.readAsDataURL(file);
+  }
+  function handleBannerFile(file) {
+    if (!file) return;
+    const nameLabel = document.getElementById('bannerFileName');
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      document.getElementById('bannerUrlInput').value = '';
+      updateBanner(e.target.result);
+      nameLabel.textContent = `✓ ${file.name}`;
+    };
+    reader.onerror = () => { nameLabel.textContent = '⚠ No se pudo leer el archivo'; };
+    reader.readAsDataURL(file);
+  }
+  function renderLogoIntoElement(container, value, maxSizeStyle, fallbackClass) {
+    if (!container) return;
+    if (!value) {
+      container.innerHTML = `<span class="${fallbackClass}">${currentBrandName.toUpperCase()}</span>`;
+      return;
+    }
+    if (/^<\?xml|^<svg/i.test(value)) {
+      container.innerHTML = value;
+      const svgEl = container.querySelector('svg');
+      if (svgEl) {
+        svgEl.setAttribute('style', maxSizeStyle);
+      } else {
+        container.innerHTML = `<span class="${fallbackClass}">⚠ SVG no válido</span>`;
+      }
+      return;
+    }
+    container.innerHTML = `<img src="${value}" alt="Logo partner" style="${maxSizeStyle}" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'${fallbackClass}',textContent:'⚠ No se pudo cargar el logo'}))">`;
+  }
+  function renderLogoInto(containerId, value, maxSizeStyle, fallbackClass) {
+    renderLogoIntoElement(document.getElementById(containerId), value, maxSizeStyle, fallbackClass);
+  }
+  function renderLogoIntoAll(className, value, maxSizeStyle, fallbackClass) {
+    document.querySelectorAll('.' + className).forEach(el => renderLogoIntoElement(el, value, maxSizeStyle, fallbackClass));
+  }
+  // Logo del header: independiente del logo del footer (que suele ser una versión en negativo/blanco)
+  function updateLogo(input) {
+    const value = (input || '').trim();
+    currentLogoValue = value;
+    renderLogoInto('logoContent', value, 'height:36px;width:auto;max-width:260px;display:block;object-position:left center;', 'logo-fallback');
+    renderLogoInto('loginLogoContent', value, 'width:220px;height:56px;max-width:100%;object-fit:contain;object-position:left center;display:block;', 'login-logo-fallback');
+    renderLogoInto('signupLogoContent', value, 'width:200px;height:52px;max-width:100%;object-fit:contain;object-position:left center;display:block;', 'login-logo-fallback');
+    renderLogoInto('agencyLogoContent', value, 'width:150px;height:40px;max-width:100%;object-fit:contain;object-position:left center;display:block;', 'login-logo-fallback');
+    renderLogoIntoAll('provider-logo-content', value, 'height:32px;width:auto;max-width:110px;object-fit:contain;object-position:left center;display:block;', 'logo-fallback');
+    scheduleSave();
+  }
+  function updateFooterLogo(input) {
+    const value = (input || '').trim();
+    currentFooterLogoValue = value;
+    renderLogoInto('footerLogoContent', value, 'width:200px;height:auto;max-width:200px;display:block;object-position:left center;', 'footer-logo-fallback');
+    scheduleSave();
+  }
+  function updatePartnerName(name) {
+    currentBrandName = (name && name.trim()) ? name.trim() : 'Travelance';
+    document.querySelectorAll('.brand-name').forEach(el => el.textContent = currentBrandName);
+    document.title = `${currentBrandName} Rewards — Mockup`;
+    // si no hay logo personalizado, refresca el texto de fallback con la nueva marca
+    if (!currentLogoValue) updateLogo('');
+    if (!currentFooterLogoValue) updateFooterLogo('');
+    scheduleSave();
+  }
+  // El fondo se comparte entre login y sign up (mismo campo del panel)
+  function updateLoginBg(url) {
+    currentLoginBgValue = url || '';
+    ['loginBg', 'signupBg'].forEach(id => {
+      const bg = document.getElementById(id);
+      bg.style.backgroundImage = url ? `url('${url}')` : '';
+      bg.style.backgroundSize = 'cover';
+      bg.style.backgroundPosition = 'center';
+    });
+    scheduleSave();
+  }
+  function handleLoginBgFile(file) {
+    if (!file) return;
+    const nameLabel = document.getElementById('loginBgFileName');
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      document.getElementById('loginBgUrlInput').value = '';
+      updateLoginBg(e.target.result);
+      nameLabel.textContent = `✓ ${file.name}`;
+    };
+    reader.onerror = () => { nameLabel.textContent = '⚠ No se pudo leer el archivo'; };
+    reader.readAsDataURL(file);
+  }
+  // --- Login (simulado) ---
+  function openLogin() {
+    document.getElementById('loginScreen').classList.add('open');
+  }
+  function closeLogin() {
+    document.getElementById('loginScreen').classList.remove('open');
+  }
+  function handleLoginSubmit(event) {
+    event.preventDefault();
+    const btn = document.getElementById('loginSubmitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Iniciando sesión...';
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.textContent = 'Iniciar sesión';
+      closeLogin();
+      simulateLogin();
+    }, 700);
+    return false;
+  }
+
+  // --- Sign up (solo visual, sin registro real) ---
+  function openSignup() {
+    closeLogin();
+    document.getElementById('signupFormView').style.display = '';
+    document.getElementById('signupSuccessView').style.display = 'none';
+    document.getElementById('signupScreen').classList.add('open');
+  }
+  function closeSignup() {
+    document.getElementById('signupScreen').classList.remove('open');
+  }
+  function showSpinner() { document.getElementById('submitSpinner').classList.add('open'); }
+  function hideSpinner() { document.getElementById('submitSpinner').classList.remove('open'); }
+  function handleSignupSubmit(event) {
+    event.preventDefault();
+    showSpinner();
+    setTimeout(() => {
+      hideSpinner();
+      document.getElementById('signupFormView').style.display = 'none';
+      document.getElementById('signupSuccessView').style.display = 'flex';
+    }, 900);
+    return false;
+  }
+
+  // --- Alta de agencia (diálogo, solo visual) ---
+  function openAgencyDialog() {
+    document.getElementById('agencyFormView').style.display = '';
+    document.getElementById('agencySuccessView').style.display = 'none';
+    document.getElementById('agencyDialogOverlay').classList.add('open');
+  }
+  function closeAgencyDialog() {
+    document.getElementById('agencyDialogOverlay').classList.remove('open');
+  }
+  function handleAgencySubmit(event) {
+    event.preventDefault();
+    showSpinner();
+    setTimeout(() => {
+      hideSpinner();
+      document.getElementById('agencyFormView').style.display = 'none';
+      document.getElementById('agencySuccessView').style.display = 'flex';
+    }, 900);
+    return false;
+  }
+  function simulateLogin() {
+    document.getElementById('headerGuest').style.display = 'none';
+    document.getElementById('headerLogged').style.display = 'flex';
+    document.getElementById('footerNavGuest').style.display = 'none';
+    document.getElementById('footerNavLogged').style.display = '';
+    document.getElementById('copyrightGuest').style.display = 'none';
+    document.getElementById('copyrightLogged').style.display = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    fakeToast('Sesión iniciada (mockup) — bienvenida, Elena');
+  }
+  function simulateLogout() {
+    document.getElementById('userMenu').classList.remove('open');
+    document.getElementById('headerLogged').style.display = 'none';
+    document.getElementById('headerGuest').style.display = 'flex';
+    document.getElementById('footerNavLogged').style.display = 'none';
+    document.getElementById('footerNavGuest').style.display = '';
+    document.getElementById('copyrightLogged').style.display = 'none';
+    document.getElementById('copyrightGuest').style.display = '';
+    showView('home');
+    fakeToast('Sesión cerrada');
+  }
+  function toggleUserMenu() {
+    document.getElementById('userMenu').classList.toggle('open');
+  }
+
+  // --- Rewards (solo visual, con simulación de canje) ---
+  let mockAgentPoints = 1500;
+  const mockRewardMinPoints = 1000;
+  const withholdingRatePct = 0.02;
+
+  function formatNumberEs(n) {
+    return new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0, useGrouping: true }).format(n);
+  }
+  function formatCurrencyEs(n) {
+    return new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: true }).format(n);
+  }
+  function refreshBalanceDisplay() {
+    document.getElementById('agentPointsDisplay').textContent = formatNumberEs(mockAgentPoints);
+    const bookingsDisplay = document.getElementById('bookingsPointsDisplay');
+    if (bookingsDisplay) bookingsDisplay.textContent = formatNumberEs(mockAgentPoints);
+  }
+  function openRewardModal() {
+    if (mockAgentPoints < mockRewardMinPoints) {
+      document.getElementById('rewardErrorModal').classList.add('show');
+      return;
+    }
+    const gross = mockAgentPoints / 100;
+    const withholding = Math.round(gross * withholdingRatePct * 100) / 100;
+    const net = Math.round((gross - withholding) * 100) / 100;
+    document.getElementById('modalPoints').textContent = formatNumberEs(mockAgentPoints);
+    document.getElementById('modalGross').textContent = formatCurrencyEs(gross) + ' €.';
+    document.getElementById('modalWithholding').textContent = formatCurrencyEs(withholding) + ' €';
+    document.getElementById('modalNet').textContent = formatCurrencyEs(net) + ' €.';
+    document.getElementById('rewardModal').classList.add('show');
+  }
+  function closeRewardModal() {
+    document.getElementById('rewardModal').classList.remove('show');
+  }
+  function closeErrorModal() {
+    document.getElementById('rewardErrorModal').classList.remove('show');
+  }
+  function toggleWithholdingTooltip() {
+    document.getElementById('withholdingBackdrop').classList.add('show');
+    document.getElementById('withholdingTooltip').classList.add('show');
+  }
+  function closeWithholdingTooltip() {
+    document.getElementById('withholdingBackdrop').classList.remove('show');
+    document.getElementById('withholdingTooltip').classList.remove('show');
+  }
+  function addRedemptionRow(points) {
+    const tbody = document.getElementById('rewardsTableBody');
+    const tr = document.createElement('tr');
+    const today = new Date();
+    const dateStr = String(today.getDate()).padStart(2, '0') + '/' + String(today.getMonth() + 1).padStart(2, '0') + '/' + today.getFullYear();
+    tr.innerHTML = `<td>Tarjeta amazon</td><td>${dateStr}</td><td><span class="incidence-tag">Pendiente de validación</span></td><td>${formatCurrencyEs(points)}</td>`;
+    tbody.prepend(tr);
+  }
+  function confirmRedemption() {
+    const btn = document.getElementById('confirmRedeemBtn');
+    if (btn.disabled) return;
+    btn.disabled = true;
+    btn.textContent = 'Procesando...';
+    showSpinner();
+    setTimeout(() => {
+      hideSpinner();
+      btn.disabled = false;
+      btn.textContent = 'Confirmar';
+      closeRewardModal();
+      addRedemptionRow(mockAgentPoints);
+      mockAgentPoints = 0;
+      refreshBalanceDisplay();
+      fakeToast('Recompensa canjeada correctamente (mockup)');
+    }, 900);
+  }
+
+  // --- Reservas (solo visual) ---
+  function applyBookingFilters() {
+    const type = document.getElementById('filterType').value;
+    const status = document.getElementById('filterStatus').value;
+    document.querySelectorAll('#bookingsTableBody tr').forEach(tr => {
+      const matchesType = type === 'all' || tr.dataset.type === type;
+      const matchesStatus = !status || tr.dataset.status === status;
+      tr.style.display = (matchesType && matchesStatus) ? '' : 'none';
+    });
+  }
+  function openBookingFormModal() {
+    document.getElementById('bookingForm').reset();
+    document.getElementById('policyFieldGroup').style.display = 'none';
+    document.getElementById('bookingFormModal').classList.add('show');
+  }
+  function closeBookingFormModal() {
+    document.getElementById('bookingFormModal').classList.remove('show');
+  }
+  function onProviderChange() {
+    const provider = document.getElementById('bookingProvider').value;
+    document.getElementById('policyFieldGroup').style.display = provider === 'Intermundial' ? 'flex' : 'none';
+  }
+  function handleBookingSubmit(event) {
+    event.preventDefault();
+    const provider = document.getElementById('bookingProvider').value;
+    const locator = document.getElementById('bookingLocatorInput').value.trim();
+    const policy = document.getElementById('bookingPolicy').value.trim();
+
+    if (!provider || !locator) {
+      fakeToast('Por favor, introduce el proveedor y el localizador.');
+      return false;
+    }
+    if (provider === 'Intermundial' && !policy) {
+      fakeToast('Por favor, introduce una póliza.');
+      return false;
+    }
+
+    const providerLogos = {
+      'Intermundial': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXsAAACFCAMAAACND6jkAAABuVBMVEX///8eFkIcFEEbEkAXDT4AnuIMADnr6u4AADUSBTzl5ekaDkNqZ3y2tb9fWXgZED/Ix81/epMAADErIVIAAC4QADvQztjJx9IAmd05MlhGQV/w7/IHADfOzdSVkqNTTmsAAClzcISGg5MAk9cqI0o0LlGopbaKhZxtZ4ahnrAAi9Da2eCrqbUAlNUAhsMAhcpUUGgAYZUAeLEAT4Dr9/wAbqUAgr4YIk7dfywAWowAQXAASnoQKlfwgRE+OFwmH0flfSHVgTXL5vbtexEEOGbMh0X2gwDxhxP3jAAUJlLYgTL5yZYAesSyr716nbOw1eqZyeN1tNVipMmMrsWlvM2+zNhdt+ELmdMAPXR6xepQd5kqcJ2V0fFIibN0n77J5/hvjqaUpq7MyMH849D/8+bBnHXvjCn2oUP6sF33t23iwpbbxaU7ns+ymHnEgkqVe1x3d29abXg9XXeonIa6hV1xi464im+ii31sm6mZoJdNo8TOklnZs5Syr6YAABE8selofpf/0q7948L3nQ3prEfVrGLFp3GlglpEXXKBg3gpa5DCgka2n4RviKHNonzw18Pl0qr7nADYlkU6K6MkAAAQmElEQVR4nO2ci1/byLXHrYdlSbYsbBDGlizHDx5GBudBsmw2McRZs1saQ0IIbhJIIG2SexvT7Za8CO3SNu32bpN2b/Yv7jwkeWzLDx4btsv8Pp98Po4sz5z5+ujMzDljfD4qKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKqr/Ds24OmlLTpdmyuXlm7du3VpZWXnw4PbqHUs/aYtOiWbKy2u1YvHS+fPnL148d+7TC5/96rOlkzbqVGimfLc2mZ2amp6+dMmB/+m91ZM26xQIkPdnR6amIPtp5Pnnzt2/d1s+abtOgWbW/SNABPvzGw9W6WT7EfRwbcTv92P2EH6tvnKzfNJGnQrNLPshej9y/OxUbWNz69GvkX6DddIG/nw1s47IY/i1+ubW4ycLV7/44osnT58+/Z///eVvnz179GggCUQXnMctAr2//mBpe/461NWFhYUnP1R+97uvfv/1Hy5f0QTRGAwXAidt7M9LM3ezNvv6ytLOIgJ/HXCv7D1/9eLefbDG/9Xnn1+58gnDcBqXofAPqYAF1bJsXM+CSOP31+pLO5V5qOvX5yvPX756vQGXmZ+CDdblywD+LwB8Rp0ze4QdHevHG8NPQAGlUAVCHGUvpF7Kh6Emmq4tZwF74PJbj2eBAPprkHt9urG5BfAd9gwfr3btQVfyUMrPGn4sMSSKUVEBLwNmCirSG36ElyRJCJKXymBD5a8v7VZmFxcXZ2ffvXz14k0tO0nsbbHjg6AD4bNipmsPgRAwS4ymftZbsliKBySCkL0VEnmeN8JWzw9FoOtyg8SVmf1JQH77GtDibGUbOLx/JEvsbVsdXyp19/tASIJPR/i0sJfTGhrvYdivZ1cA+UoFsH/+amu/aW9LOj6ebXk1VegeTU4Pe+ao7Gfqm5B8pbK3vftm317i23tbzB6nM9Fs+wmbyMR69HAA9gUFqrfRPz0dj9+XV/8I9exPW2v+EXd71er4KOhc+Tyc6T2FHoD9N3BiiOZ73/iT0zHFe6SH6/tomen3cnwUdC5f/vTPW8k+zDoA+zPQGPW/nL1sngUrx7PjfaxzvNjPLO9ns03smzLJFwH7c/eWVvuL4KeNvc8ahuoj2eLFfnkNkW9zfDfo3N9YWu07Kp8e9niu7V8ea8ybU5NZG75X0Lm0cXv1ILlkb/a6HpBluSUd0Yk9vtfbkXQZSm/7gNX8AXih9a6+pIMOrE6fDDhvkX7fxczmMbTPtWuTEH2z49tBB+yv6rdulg9WPmlnLydjSt7MRNKRTEFJ2uYEFCUWhVs1NhJrWu0EwM3o3rwSa/n+rJhSwO2YBcV+yImLeWVAdq7gu8gWZLSoImnp+EqDj2sobH+4lb+F7UJvJcmYg1drzrgs0Ai2qHUMrezLa0WE3qZPOH42Wzs4eF8beytWiKRymmgImiYIYjCVH0bXY0aQYxkEX1XVIGN7vx7LJIKiAG42DAksaBuWB2L5UBy3owmGKGZ0zCNUYg18URRKaSUZM+Ft+C4hHnHRjs0FQUdDJEwR9hwcJg0VsKGGwYTzTWFWLoQHUauGOBg2zQTnsNczGmhGG8fPtGyGE2C02ExgklZqWNDCvlwvTmK/bw06MMvwp2d/cfVXR7+RreFuifwm9lY1HRcEnmMcsbyYQt4SE1nWucay3FzeNj0u8s51htdy4w4AOVMyJNVthxHyPj1ZCM0Jkurez6hGDuCT3O5YzmBMO9CN5TjQ0RnC0uEh2DOL2IOm4qJGGipJ4QHie0pzkmsvL/BzrBPv9YwBmjFs9tZZkWgEmTToWNDMfqZ+Y7KJvQO//sB8/8PCwsIXX2J9+PDh7du3f/v7t4+3X2XS4VQqFSIM68jeCgU1jmWaJQ3GMHviGovZByIGxsup+GMqH7LXtQNDDfDgW2OZqi8ZlrSmccIP8i39ccK47rAH/21mj9qC7AMpTVNbmmKllLuPtNKCS75xg81egK5gs/ehnRawj3OGwHD4EW1lf/NG0WXfcPz9FXOnAsBfvQpLV0AA/tune8//8dXv/+/ylaAgSWAz0XFLRLKPJXjbU2BEEAXs0lIJ2Bk7A55rPETDMEQNNWeK+IoWL5XmBB59CSEcdgZEPBBJMDSVC4pxxafEES6W4zUDRAmJfLrA/w3sqKym9GYvn3E+CGIdiFXYUN7u2xdAfHG7ICDZz58n+0wQNKGpc2AEcU5DzyQrKh7s60XEvsnx32zt7F3FdSvEHoB/urf91Xdf//MCKqHgTDJj9MceWanNpdKZfKGQSWEcURN4kmnmDUQORE8g9CwEIR6OCeUVOF0loAupObPBnmVKIbMAlS/INntWGg2DubFghnK8DVDIhUF34AIaOp8I9GY/hL90YKiZL+QzKdi127dPmUPj4JkUHIaZLiFDPdmPpVATVQUPAfkDn9Lb2dcAezfgZ3Eq+TEuGGL2C18+2dt+9WLz/kWcV3AzyYxh9s1eSxdiaHrQYxH0yDr9t64xw+h5zUVwjNcV9H/prOWy50omMc8ocTjhzYH5FY3bGsNPGZvLFNAixRoroS9HjPXHHjRVxYYGYmkNGiqFUG9yGrk9XzLxKs1SIjmuA3s5RkyFeiyFZjVRbmc/XSQd31/fsutW87houLD4+NV3r+uXnIQaWUI5APtoI/0mY1uGLC/2Fhov01idxuAIudG8y55PkZk8xJ7LNS6ZowhY2mpcgLyFiN4Xe260kR23wjx6ZFDjSfRRbrRRscPB1It9i8aQBVGlnX2RYF9bMbcX7cLVPCRf2YZFlMmiRyb5gOyJNFAVLRDEMS/2eYhXJQDo4wJi2Y29Gm9cGj7LI8tcRAF0AT/y/bAnVv8Kes7i0FB9DM01fLqBl1jfd2cvoy9JzHuzx/CnHuw+XkR1q1nk9de2d1/X/VmnfIWTOmTd1uhUtu3OXkcEhHEP9npYasRGrAG4GMJBpx/2gbTUYpk93EOwlwdZGIWgh8kRDX0PRM0o1i97n+0Ondkj8rBwhdlXdsylemtSpyXoiIfzex/kxWgR9LqF/SCamELEzRYEoCbgEPthr6MFHsneRHFZOwz7EqTLQCexUPJGChF7rQOyx77WHu8B/Pru42tIgP38/PPdpX20u/LIJLuzLc8VvPvqxR7N/BIu1rewj0JPy40TN8vw89wofPA7xvuu7PMo3BqHYY+As7A2jcO9RpapiVyaJ3s94ORyOrKvQfS1FzuwboULttfem286ZZIJx5dGzU55ykOzx+u8uYlqwZVZgm6LVnqH8/uxw7MPN9gH0SaWfNC7+b0+XIXpnAxYjsaszuzrN4rFld13FZv97LUdGGua0/geddtPPglVO56QOjR7C7EHFxriGDfoerJXPw57tNhn+mSfNMM5sNfTBMFgEukCWuZ6sb91o7i5U3n3zma/s1knkzpNQcf5GQosHf650CWbf2j2w1HMnkU5A/TP/v9J+73IulmPnuyVsCo5aQ1W1dAj48l++cbmP95h9Ht775fqI03ZTK+67WeXL/yre3X7iOxZjm+VlDlp9kzf7GMJvHVXNQNIs/OCXuzLG4///W9YKf/++0e3V0ZaM8kes+2923d6FKSOGnNK4TYdfq49vpjDMm3sPeZaOYS31loibebzZiSlqp3Y+6zvf43P1j9cm5r0yCQTsy3Y227cvmP1zOcfmn3Anmtx/ZOU3IX9x/B7tu+5toqzGMFMTIZnUuWkkugU710t1zuUUGz4gP3GrdW+CilHWGMiv494N3tc7ImdW9/sO6wxPdhn0BZFyDRiQ8d1jqObU8W2THKDPdjb1m4t91vBOjx7NET1rHezR2ZfzRGZJKR+2VuJvvdWGRSeVGLAvdjfzBa9SyjgFcz0rB2kdHgA9sjRVXczNQE/qCa8Z/Ijx3uUmGOiRGKgX/b45JlaIt7tFO/tO4kpsQf78mSRKKG0BB3/2vrDdvBdTgAcgD3MW7Jq2AWF1xPjPi8deX0vj0JbpHDj8/2y1wsol6YSv/po9/tMJ/ZSV/ZwhzXZXL+y0e+/2X3/7Le/JPX/j1a3lv5V7Qz/AOxLqDKVc4YkoxwyR/pXQ0eOOb4EngYbt1t9svclUZFGLeXdhslzCoi9hs/fo5jDDRKPLuH343gJRI6qfKMpi2/DB/jf7L7ce/rkyZO3SB8+vP3btzvfvfj6nxc+v9LlZ/4HYD+OClcqrJXo8PYIqiKyibGmsKOjIzFHZ4/cDjRh+40+bBp9sg+M4yRywnQMQ/l7mz1qBmb6A7rPRBtxjQhsBHv8phjDg0W6e6NYbKsd+te2Xu49WVhw67WA+4vNDTuTfO/OsbC38G5KDWUyGZgctwbRaljNhcyxqhKLKdXCmJlJR2LHwn44h1qXShkzb5pmOozXg32w9yXRE8rwwDBgl1LNhxp1K18+iEYRyqTHdCWBCwaNhgj21TkOvZlJu7natRtuGt9x/NrrV88XFxau2uSffrv74vXGtJvUuXC7M/qDsPdN4HK5JAjGHHSpKj4swEpSrpRIpRKleI4XjCPkMUn2voh99kEIznGSYB8I6Yu9XmAQfE5i4wlgFoM3r5h9FaXFwSDEsKzjPqRUpjpsWcOxKk6kYvZyDldvBe2M08utBnu8varvvqxctWvlC1/+8H5r6U1tijiM/9lmt63tQdjLcefoBS796YVBwTkwxfO8io5ZdMmlHcjvfXJKcxItjZMenNoHe5+ej+OTCoyq8s7hD+dcWsh+i4tbPiuMjq3wfOlsKBROlXBHBl4/hJ1jKO5Kd2a6Kei8AS7v/rz2h52tB/VaNtuU1OkWcQ7G3jccFjUVbhvVOTQOPRbShJaDMqp2LPkcHzpl4x5wwtFOMsS41Qd7n66EjObPsrxgn/1QEvBUEcvx0QHQR4RBA1DhD9vgYSFw3RjCe+LhOHqL5c+4HS0T7AH52et2qXxvd2ml3v4rlPvd/6ZLIHQmGo2eQb91i40OgdffNNWtovBdd6VnKROloBHVgiUboRyLoCN9wHIJnf3T4ilYphmArQ4lmtgPgtaHOII97pqsnTDQAHczKythu23YdDRYmjAH0NED6xvYOttUO4FtiY1dtlUIMaLh2mUMJtIF/PzryGQtl0I1DXkgUhIaA4gaufC4YgeKJLgxqg0miH3vTQd+HZC3jynM7iyt7HuUUM7dv91jn2UNQCHeehK9Jhek+AqxkJGT8BJxsEJODhQykYmJ8AQ6eJpMWnARquNWm84ao7aSRCUBdy2TjaMrxB3JaiY9EQ7BpkGnzoFju3WiKb3NUNCYYkaAWaH0eF4hPozH0DgmKVtgAKATMIBxszqA7W+6kehnBof87NZLu1Z+tQJCjddh/IsXV+58hL/qAg+Bw98Lyz/GT6QDMmz5cE3DA+JWx/PpxH0BbH/PG234UzvvZtEZket7Wys1jzT+pfOXVpbp39M5bkH4u9fQGZH5xd2VWnsJJTs9XT/EiXCq3ppZruN4M195UGvLZoKFTv1umZL/sVT+HmulNZUMXuzffUjB//hab/klxIh/f52C/yiaWSsSaXwEnv5t2I+l8pSTUsuO7K+XKfiPqfIapu+/S8F/dM2Ul9fvru2vPTxpQ06n6F8Ap6KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKiOmX6DwR5gwJB+5kSAAAAAElFTkSuQmCC',
+      'dimensiones CLUB': 'data:image/png;base64,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'
+    };
+    let providerCell;
+    if (provider === 'Soltour Rewards') {
+      providerCell = '<span class="provider-logo-content"></span>';
+    } else if (providerLogos[provider]) {
+      providerCell = `<img class="provider-logo-img" src="${providerLogos[provider]}" alt="${provider}">`;
+    } else {
+      providerCell = provider;
+    }
+
+    const tbody = document.getElementById('bookingsTableBody');
+    const tr = document.createElement('tr');
+    tr.dataset.type = 'booking';
+    tr.dataset.status = 'No aplica';
+    tr.innerHTML = `<td>${locator.toUpperCase()}</td><td>${providerCell}</td><td>--</td><td>--</td><td>--</td><td><span class="neutral-tag">No aplica</span></td><td>--</td><td>--</td><td>--</td>`;
+    tbody.prepend(tr);
+    if (provider === 'Soltour Rewards') {
+      const logoUrl = document.getElementById('logoUrlInput').value;
+      renderLogoIntoElement(tr.querySelector('.provider-logo-content'), logoUrl, 'height:32px;width:auto;max-width:110px;object-fit:contain;display:block;', 'logo-fallback');
+    }
+    applyBookingFilters();
+    closeBookingFormModal();
+    fakeToast('Reserva añadida correctamente (mockup)');
+    return false;
+  }
+  function openTitleTooltip() {
+    document.getElementById('titleTooltipBackdrop').classList.add('show');
+    document.getElementById('titleTooltipWrapper').classList.add('show');
+  }
+  function closeTitleTooltip() {
+    document.getElementById('titleTooltipBackdrop').classList.remove('show');
+    document.getElementById('titleTooltipWrapper').classList.remove('show');
+  }
+
+  function showView(view) {
+    document.getElementById('homeView').style.display = view === 'home' ? '' : 'none';
+    document.getElementById('rewardsView').style.display = view === 'rewards' ? '' : 'none';
+    document.getElementById('reservationsView').style.display = view === 'reservations' ? '' : 'none';
+    document.getElementById('consultasView').style.display = view === 'consultas' ? '' : 'none';
+    document.getElementById('profileView').style.display = view === 'profile' ? '' : 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('userMenu')?.classList.remove('open');
+  }
+  // --- Perfil de usuario (solo visual) ---
+  function updateProfileCompletion() {
+    const fields = document.querySelectorAll('.profile-required');
+    const filled = [...fields].filter(f => f.value && f.value.trim().length > 0).length;
+    const pct = Math.round((filled / fields.length) * 100);
+    document.getElementById('avatarRing').style.setProperty('--pct', pct);
+    document.getElementById('completionText').textContent = pct + '%';
+    document.getElementById('sideProgressText').textContent = pct + '%';
+    document.getElementById('sideProgressFill').style.width = pct + '%';
+    const msg = document.getElementById('profileMsg');
+    if (pct === 100) {
+      msg.innerHTML = '<i class="pi pi-check-circle"></i> Todos los campos obligatorios están completos';
+      msg.classList.add('msg-ok');
+    } else {
+      msg.innerHTML = '<i class="pi pi-exclamation-triangle"></i> Rellena los campos obligatorios para guardar';
+      msg.classList.remove('msg-ok');
+    }
+    renderInlineIcons();
+  }
+  function scrollToProfileSection(event, sectionId) {
+    event.preventDefault();
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function handleProfileSubmit(event) {
+    event.preventDefault();
+    const fields = document.querySelectorAll('.profile-required');
+    const allFilled = [...fields].every(f => f.value && f.value.trim().length > 0);
+    if (!allFilled) {
+      fakeToast('Rellena los campos obligatorios para guardar');
+      return false;
+    }
+    const btn = document.getElementById('profileSaveBtn');
+    btn.disabled = true;
+    showSpinner();
+    setTimeout(() => {
+      hideSpinner();
+      btn.disabled = false;
+      fakeToast('Datos guardados correctamente (mockup)');
+    }, 700);
+    return false;
+  }
+  function toggleFaq(btn) {
+    btn.closest('.faq-item').classList.toggle('faq-item--open');
+  }
+  document.addEventListener('click', (e) => {
+    const chip = document.querySelector('.user-chip');
+    if (chip && !chip.contains(e.target)) {
+      document.getElementById('userMenu')?.classList.remove('open');
+    }
+  });
+  function updateBanner(url) {
+    currentBannerValue = url || '';
+    const slide = document.getElementById('bannerSlide1');
+    if (url) {
+      slide.style.backgroundImage = `url('${url}')`;
+      slide.style.backgroundSize = 'cover';
+      slide.style.backgroundPosition = 'center';
+      slide.textContent = '';
+    } else {
+      slide.style.backgroundImage = '';
+      slide.textContent = 'Banner promocional 1';
+    }
+    scheduleSave();
+  }
+  function resetDefaults() {
+    document.getElementById('primaryColorInput').value = '#0F6E6A';
+    document.getElementById('primaryColorHex').value = '#0F6E6A';
+    document.getElementById('secondaryColorInput').value = '#0B5652';
+    document.getElementById('secondaryColorHex').value = '#0B5652';
+    document.getElementById('footerColorInput').value = '#123832';
+    document.getElementById('footerColorHex').value = '#123832';
+    document.getElementById('logoUrlInput').value = '';
+    document.getElementById('footerLogoUrlInput').value = '';
+    document.getElementById('partnerNameInput').value = '';
+    document.getElementById('bannerUrlInput').value = '';
+    document.getElementById('logoFileInput').value = '';
+    document.getElementById('footerLogoFileInput').value = '';
+    document.getElementById('bannerFileInput').value = '';
+    document.getElementById('loginBgUrlInput').value = '';
+    document.getElementById('loginBgFileInput').value = '';
+    document.getElementById('logoFileName').textContent = '';
+    document.getElementById('footerLogoFileName').textContent = '';
+    document.getElementById('bannerFileName').textContent = '';
+    document.getElementById('loginBgFileName').textContent = '';
+    updateColor(colorVarMap.primary, '#0F6E6A');
+    updateColor(colorVarMap.secondary, '#0B5652');
+    updateColor(colorVarMap.footer, '#123832');
+    updateLogo('');
+    updateFooterLogo('');
+    updatePartnerName('');
+    updateBanner('');
+    updateLoginBg('');
+    binData.config = {};
+    saveBinData().catch(() => {});
+    fakeToast('Valores restablecidos para todo el mundo que abra este enlace');
+  }
+
+  // --- Persistencia de la personalización (visible para cualquiera que abra este enlace) ---
+  let saveTimer;
+  function scheduleSave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveConfigToStorage, 700);
+  }
+  async function saveConfigToStorage() {
+    const cfg = {
+      partnerName: document.getElementById('partnerNameInput').value || '',
+      primaryColor: document.getElementById('primaryColorHex').value || '',
+      secondaryColor: document.getElementById('secondaryColorHex').value || '',
+      footerColor: document.getElementById('footerColorHex').value || '',
+      logo: currentLogoValue,
+      footerLogo: currentFooterLogoValue,
+      banner: currentBannerValue,
+      loginBg: currentLoginBgValue
+    };
+    binData.config = cfg;
+    const ok = await saveBinData();
+    if (!ok) fakeToast('No se pudo guardar la personalización (revisa la conexión con npoint)');
+  }
+  async function loadConfigFromStorage() {
+    try {
+      await ensureBinLoaded();
+      const cfg = binData.config;
+      if (!cfg || Object.keys(cfg).length === 0) return;
+      if (cfg.partnerName) {
+        document.getElementById('partnerNameInput').value = cfg.partnerName;
+        updatePartnerName(cfg.partnerName);
+      }
+      if (cfg.primaryColor) {
+        document.getElementById('primaryColorInput').value = cfg.primaryColor;
+        document.getElementById('primaryColorHex').value = cfg.primaryColor;
+        updateColor(colorVarMap.primary, cfg.primaryColor);
+      }
+      if (cfg.secondaryColor) {
+        document.getElementById('secondaryColorInput').value = cfg.secondaryColor;
+        document.getElementById('secondaryColorHex').value = cfg.secondaryColor;
+        updateColor(colorVarMap.secondary, cfg.secondaryColor);
+      }
+      if (cfg.footerColor) {
+        document.getElementById('footerColorInput').value = cfg.footerColor;
+        document.getElementById('footerColorHex').value = cfg.footerColor;
+        updateColor(colorVarMap.footer, cfg.footerColor);
+      }
+      if (cfg.logo) {
+        if (!cfg.logo.startsWith('data:') && !/^<\?xml|^<svg/i.test(cfg.logo)) {
+          document.getElementById('logoUrlInput').value = cfg.logo;
+        }
+        updateLogo(cfg.logo);
+      }
+      if (cfg.footerLogo) {
+        if (!cfg.footerLogo.startsWith('data:') && !/^<\?xml|^<svg/i.test(cfg.footerLogo)) {
+          document.getElementById('footerLogoUrlInput').value = cfg.footerLogo;
+        }
+        updateFooterLogo(cfg.footerLogo);
+      }
+      if (cfg.banner) {
+        if (!cfg.banner.startsWith('data:')) document.getElementById('bannerUrlInput').value = cfg.banner;
+        updateBanner(cfg.banner);
+      }
+      if (cfg.loginBg) {
+        if (!cfg.loginBg.startsWith('data:')) document.getElementById('loginBgUrlInput').value = cfg.loginBg;
+        updateLoginBg(cfg.loginBg);
+      }
+    } catch (e) {
+      // sin personalización guardada todavía, o error de lectura: se queda con los valores por defecto
+    }
+  }
+  loadConfigFromStorage();
+
+  // año dinámico en el copyright del footer
+  document.getElementById('footerYear').textContent = new Date().getFullYear();
+  document.getElementById('footerYearLogged').textContent = new Date().getFullYear();
+  // --- Iconos SVG inline (sin depender de ningún CDN externo) ---
+  const ICONS = {
+    'pi-info-circle': '<circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="7.5" r="0.9" fill="currentColor" stroke="none"/>',
+    'pi-chevron-down': '<polyline points="5,8.5 12,15.5 19,8.5"/>',
+    'pi-book': '<path d="M4 5.5c2-1 5-1.2 8 0v13c-3-1.2-6-1-8 0z"/><path d="M20 5.5c-2-1-5-1.2-8 0v13c3-1.2 6-1 8 0z"/>',
+    'pi-pencil': '<path d="M4 20l1-4.5L16 4.5a2 2 0 0 1 3 3L8 18.5z"/><line x1="14" y1="6.5" x2="17.5" y2="10"/>',
+    'pi-check-circle': '<circle cx="12" cy="12" r="9"/><polyline points="8,12.5 11,15.5 16.5,9"/>',
+    'pi-gift': '<rect x="4" y="10" width="16" height="10" rx="1"/><line x1="4" y1="14.5" x2="20" y2="14.5"/><line x1="12" y1="10" x2="12" y2="20"/><path d="M12 10C10 6 5 6.5 6 9.5c.6 1.6 4 1.3 6 .5"/><path d="M12 10c2-4 7-3.5 6-.5-.6 1.6-4 1.3-6 .5"/>',
+    'pi-calendar': '<rect x="4" y="5.5" width="16" height="15" rx="1.5"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="8" y1="3.5" x2="8" y2="7.5"/><line x1="16" y1="3.5" x2="16" y2="7.5"/>',
+    'pi-users': '<circle cx="8.5" cy="8.5" r="3"/><path d="M2.8 19c.6-3.4 3-5 5.7-5s5.1 1.6 5.7 5"/><circle cx="16.5" cy="9.5" r="2.5"/><path d="M15 14.2c2.2.2 4 1.6 4.5 4.3"/>',
+    'pi-user': '<circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1-4.2 4-6.2 7.5-6.2s6.5 2 7.5 6.2"/>',
+    'pi-id-card': '<rect x="3" y="5.5" width="18" height="13" rx="1.5"/><circle cx="8.5" cy="11" r="1.8"/><path d="M5.7 15.3c.4-1.6 1.6-2.4 2.8-2.4s2.4.8 2.8 2.4"/><line x1="14" y1="9.5" x2="18" y2="9.5"/><line x1="14" y1="13" x2="18" y2="13"/>',
+    'pi-phone': '<path d="M6 4.5c1.5-.4 2 0 2.4.8l1 2.2c.3.7.1 1.3-.4 1.8l-1 1c1 2.3 2.4 3.7 4.7 4.7l1-1c.5-.5 1.1-.7 1.8-.4l2.2 1c.8.4 1.2.9.8 2.4-.4 1.6-1.5 2.3-3 2.1-5-.7-9.6-5.3-10.3-10.3-.2-1.5.5-2.6 2.1-3z"/>',
+    'pi-briefcase': '<rect x="3" y="8" width="18" height="11" rx="1.5"/><path d="M8.5 8V6a1.5 1.5 0 0 1 1.5-1.5h4A1.5 1.5 0 0 1 15.5 6v2"/><line x1="3" y1="13" x2="21" y2="13"/><line x1="11.3" y1="13" x2="12.7" y2="13"/>',
+    'pi-exclamation-triangle': '<path d="M12 4.5 21 19.5H3z"/><line x1="12" y1="10" x2="12" y2="14.5"/><circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none"/>',
+    'pi-sign-out': '<path d="M13 4.5H6.5A1.5 1.5 0 0 0 5 6v12a1.5 1.5 0 0 0 1.5 1.5H13"/><line x1="10" y1="12" x2="20" y2="12"/><polyline points="16.5,8.5 20,12 16.5,15.5"/>'
+  };
+  function renderInlineIcons() {
+    document.querySelectorAll('i.pi').forEach(el => {
+      if (el.querySelector('svg')) return;
+      const iconClass = [...el.classList].find(c => ICONS[c]);
+      if (!iconClass) return;
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('viewBox', '0 0 24 24');
+      svg.setAttribute('width', '1em');
+      svg.setAttribute('height', '1em');
+      svg.setAttribute('fill', 'none');
+      svg.setAttribute('stroke', 'currentColor');
+      svg.setAttribute('stroke-width', '1.8');
+      svg.setAttribute('stroke-linecap', 'round');
+      svg.setAttribute('stroke-linejoin', 'round');
+      svg.style.verticalAlign = '-0.125em';
+      svg.style.flexShrink = '0';
+      svg.innerHTML = ICONS[iconClass];
+      el.appendChild(svg);
+    });
+  }
+  renderInlineIcons();
+
+  updateProfileCompletion();
+
+  // cerrar modal al clicar fuera
+  document.getElementById('loginScreen').addEventListener('click', (e) => {
+    if (e.target.id === 'loginScreen') closeLogin();
+  });
+  document.getElementById('signupScreen').addEventListener('click', (e) => {
+    if (e.target.id === 'signupScreen') closeSignup();
+  });
+  document.getElementById('agencyDialogOverlay').addEventListener('click', (e) => {
+    if (e.target.id === 'agencyDialogOverlay') closeAgencyDialog();
+  });
+  document.getElementById('rewardModal').addEventListener('click', (e) => {
+    if (e.target.id === 'rewardModal') closeRewardModal();
+  });
+  document.getElementById('rewardErrorModal').addEventListener('click', (e) => {
+    if (e.target.id === 'rewardErrorModal') closeErrorModal();
+  });
+  document.getElementById('bookingFormModal').addEventListener('click', (e) => {
+    if (e.target.id === 'bookingFormModal') closeBookingFormModal();
+  });
+  document.getElementById('passwordModal').addEventListener('click', (e) => {
+    if (e.target.id === 'passwordModal') closePasswordModal();
+  });
+</script>
+
+</body>
+</html>
